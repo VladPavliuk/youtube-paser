@@ -1,0 +1,45 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.pull-left {
+    float: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.p-10 {
+    padding: 10px;
+}
+
+.p-5 {
+    padding: 5px;
+}
+
+.big-text {
+    font-size: 20pt;
+}
+
+.white-text {
+    color: #fff;
+}
+
+.brand-icon {
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #ed3b3b;
+    border-radius: 15px;
+    line-height: 38px;
+}
+
+.brand-icon img {
+    height: 40px;
+}
+
+.header {
+
+}
