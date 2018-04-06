@@ -4,6 +4,6 @@ class MainController extends Controller
 {
     public function indexAction()
     {
-        echo ('adss');
+        print_r(DatabaseConnection::get());
     }
 }
