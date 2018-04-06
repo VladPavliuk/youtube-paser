@@ -11,6 +11,6 @@ class DatabaseConnection
         $dbUser = $dbParams['user'];
         $dbPassword = $dbParams['password'];
 
-        return  new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword);
+        return new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword);
     }
 }

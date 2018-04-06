@@ -4,6 +4,6 @@ class MainController extends Controller
 {
     public function indexAction()
     {
-        print_r(DatabaseConnection::get());
+        echo(json_encode(['kus' => 'ne_kus']));
     }
 }
