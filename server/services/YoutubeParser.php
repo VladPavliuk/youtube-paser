@@ -28,21 +28,54 @@ class YoutubeParser
         $this->makeRequest();
         $this->generateDomTree();
 
-//        print_r($this->htmlBody);
-        $this->getTitles();
+        $this->openList();
         return $this->videos;
     }
 
-    protected function getTitles()
+    protected function openList()
     {
-        $classname="yt-uix-tile-link yt-ui-ellipsis yt-ui-ellipsis-2 yt-uix-sessionlink";
-        $nodes = $this->htmlBody->query("//*[contains(@class, '$classname')]");
+        $classname='yt-lockup-video';
+        $nodes = $this->htmlBody->query("//*[contains(@class, '$classname')]/div/div/h3/a[contains(@class, 'yt-uix-tile-link')]");
+//        $nodes = $this->htmlBody->query("//*[contains(@class, '$classname')]/div/div/div[contains(@class, 'yt-lockup-description')]");
 
         foreach($nodes as $node) {
-            echo($node->nodeValue);
-            echo '<br>';
-
+            $this->openVideo($this->domain . $node->getAttribute('href'));
         }
+    }
+
+    protected function openVideo($url)
+    {
+        $this->queryResult = $this->htmlLoader->loadHtml($url);
+        $dom = new DOMDocument;
+        $dom->loadHTML('<?xml encoding="utf-8" ?>' . $this->queryResult);
+        $finder = new DomXPath($dom);
+
+//        $classname="yt-uix-tile-link yt-ui-ellipsis yt-ui-ellipsis-2 yt-uix-sessionlink";
+        $nodes = $finder->query("//*[contains(@class, 'watch-title-container')]");
+        foreach ($nodes as $node) {
+            $title = $node->nodeValue;
+        }
+        echo '<br>';
+        $nodes = $finder->query("//*[contains(@id, 'eow-description')]");
+        foreach ($nodes as $node) {
+            $description = $node->C14N();
+        }
+        echo '<br>';
+        $nodes = $finder->query("//div[contains(@class, 'video-extras-sparkbar-likes')]");
+        foreach ($nodes as $node) {
+            $mark = (double) preg_replace("~width:\s*(\d+.\d+)%~", '$1', $node->getAttribute('style'));
+        }
+
+        $this->addVideo($title, $description, $mark);
+    }
+
+    private function addVideo($title, $description, $mark)
+    {
+        $this->videos[] = [
+            'title' => $title,
+            'description' => $description,
+            'mark' => $mark,
+        ];
     }
 
     protected function generateDomTree()
