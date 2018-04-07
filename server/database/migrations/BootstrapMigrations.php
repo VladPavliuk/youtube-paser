@@ -5,7 +5,7 @@ require_once('./database/migrations/CreateQueriesResultsTable.php');
 
 class BootstrapMigrations
 {
-    public static function run()
+    public function run()
     {
 //        CreateQueriesTable::run();
 //        CreateQueriesResultsTable::run();

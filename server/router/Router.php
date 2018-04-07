@@ -7,24 +7,28 @@
  */
 class Router
 {
+    protected $analyzerURI;
+    protected $analyzerInnerPath;
+
     /**
      * Start router
      *
      * Router constructor.
-     * @param AnalyzerURI $analyzerURI
-     * @param AnalyzerInnerPath $analyzerInnerPath
      */
-    public function __construct(
-        AnalyzerURI $analyzerURI,
-        AnalyzerInnerPath $analyzerInnerPath
-    ) {
-        $singleRoute = $analyzerURI->matchRoute();
-        $analyzerInnerPath->defineInnerPath($singleRoute);
+    public function __construct() {
+       $this->analyzerURI = new AnalyzerURI();
+       $this->analyzerInnerPath = new AnalyzerInnerPath();
+    }
+
+    public function run()
+    {
+        $singleRoute = $this->analyzerURI->matchRoute();
+        $this->analyzerInnerPath->defineInnerPath($singleRoute);
 
         $this->runActionMethod(
-            $analyzerInnerPath->getControllerObject(),
-            $analyzerInnerPath->getActionMethodName(),
-            $analyzerInnerPath->getActionParameters()
+            $this->analyzerInnerPath->getControllerObject(),
+            $this->analyzerInnerPath->getActionMethodName(),
+            $this->analyzerInnerPath->getActionParameters()
         );
     }
 
