@@ -4,7 +4,7 @@ class CreateQueriesTable
 {
     public static function run()
     {
-        $query = DatabaseConnection::get()
+        $query =  Container::get('databaseConnection')->get()
             ->prepare('CREATE TABLE queries (
                                   id INT NOT NULL AUTO_INCREMENT, 
                                   query VARCHAR(255), 

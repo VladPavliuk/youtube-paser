@@ -2,7 +2,7 @@
 
 class DatabaseConnection
 {
-    public static function get()
+    public function get()
     {
         $dbParams = include('./configs/db_config.php');
 

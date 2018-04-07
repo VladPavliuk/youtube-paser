@@ -1,6 +1,6 @@
 <?php
 
 return [
+    'GET:search/([a-zA-Z|\d]+)' => 'Main/search/$1',
     'GET:' => 'Main/index',
-    'GET:search/([a-zA-Z|\d]+)' => 'Main/index/$1',
 ];
