@@ -4,8 +4,7 @@ class MainController extends Controller
 {
     public function indexAction()
     {
-        Container::get('htmlLoader')->setUrl('https://www.youtube.com/results?search_query=php+youtube+parser');
-        print_r(Container::get('htmlLoader')->loadHtml());
+        Container::get('youtubeParser')->getVideos('  php      parse  ');
 
 //        header('Content-type: application/json');
 //        header("Access-Control-Allow-Origin: *");

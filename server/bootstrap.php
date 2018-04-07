@@ -8,12 +8,24 @@ require_once("./router/AnalyzerURI.php");
 require_once("./router/AnalyzerInnerPath.php");
 require_once('./router/Router.php');
 require_once('./services/HtmlLoader.php');
+require_once('./services/HtmlParser.php');
+require_once('./services/YoutubeParser.php');
 
 require_once('./Container.php');
 
 Container::set('htmlLoader', new HtmlLoader);
+Container::set('htmlParser', new HtmlParser);
+Container::set('youtubeParser', new YoutubeParser(
+        Container::get('htmlLoader'))
+);
 Container::set('bootstrapMigrations', new BootstrapMigrations);
 Container::set('router', new Router);
+
+/**
+ * Run the migrations
+ *
+ */
+Container::get('bootstrapMigrations')->run();
 
 /**
  * Run the app
