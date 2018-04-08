@@ -4,22 +4,23 @@ class Main
 {
     public function saveResult($searchString, $result)
     {
-        $queryId = $this->saveQuery($searchString);
-            foreach ($result as $video) {
-            $this->saveVideo($video, $queryId);
-        }
+        print_r($this->checkIsSearchQueryExists($searchString));
+//        $queryId = $this->saveQuery($searchString);
+//            foreach ($result as $video) {
+//            $this->saveVideo($video, $queryId);
+//        }
     }
 
     private function saveVideo($video, $queryId)
     {
         $connection = Container::get('databaseConnection')->get();
-        $query = $connection->prepare("INSERT INTO queries_results (query_id, title, mark, description) 
-                      VALUES(:query_id, :video_title, :mark, :description)");
+        $query = $connection->prepare("INSERT INTO search_queries_videos (search_query_id, video_mark, video_mark, video_description) 
+                      VALUES(:search_query_id, :video_title, :video_mark, :video_description)");
         $result = $query->execute([
-            ':query_id' => $queryId,
+            ':search_query_id' => $queryId,
             ':video_title' => $video['title'],
-            ':mark' => $video['mark'],
-            ':description' => $video['description']
+            ':video_mark' => $video['mark'],
+            ':video_description' => $video['description']
         ]);
 
         if (!$result) {
@@ -27,20 +28,22 @@ class Main
         }
     }
 
-    private function checkIsVideoAlreadyExists($queryId, $videoTitle)
+    private function checkIsSearchQueryExists($searchQuery)
     {
         $connection = Container::get('databaseConnection')->get();
-        $query = $connection->prepare("SELECT count(1) FROM queries_results WHERE query_id = {}");
-
-        $result = $query->execute();
+        $query = $connection->prepare("SELECT * FROM search_queries WHERE search_query = :search_query");
+        $result = $query->execute([
+            ':search_query' => $searchQuery
+        ]);
+        return $result === 1 ? $result->fetchAll() : false;
     }
 
     private function saveQuery($queryTitle)
     {
         $connection = Container::get('databaseConnection')->get();
-        $query = $connection->prepare("INSERT INTO queries (query) VALUES(:query)");
+        $query = $connection->prepare("INSERT INTO search_queries (search_query) VALUES(:search_query)");
         $result = $query->execute([
-            ':query' => $queryTitle
+            ':search_query' => $queryTitle
         ]);
         if ($result) {
             return $connection->lastInsertId();
