@@ -4,8 +4,8 @@ class MainController extends Controller
 {
     public function searchAction($searchString)
     {
-//        $result = Container::get('youtubeParser')->getVideos($searchString);
-        $result = '';
+        $result = Container::get('youtubeParser')->getVideos($searchString);
+//        $result = '';
         $this->mainModel->saveResult($searchString, $result);
 
         return Container::get('response')->json($result);

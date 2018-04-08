@@ -1,13 +1,13 @@
 <?php
 
-require_once('./database/migrations/CreateQueriesTable.php');
-require_once('./database/migrations/CreateQueriesResultsTable.php');
+require_once('./database/migrations/CreateSearchQueriesTable.php');
+require_once('./database/migrations/CreateSearchQueriesVideosTable.php');
 
 class BootstrapMigrations
 {
     public function run()
     {
-//        CreateQueriesTable::run();
-//        CreateQueriesResultsTable::run();
+        CreateSearchQueriesTable::run();
+        CreateSearchQueriesVideosTable::run();
     }
 }

@@ -12,7 +12,7 @@ class CreateSearchQueriesVideosTable
                                   video_description TEXT,
                                   search_query_id INT NOT NULL, 
                                   PRIMARY KEY (id), 
-                                  FOREIGN KEY (search_query_id) REFERENCES queries(id) ,
+                                  FOREIGN KEY (search_query_id) REFERENCES search_queries(id) ,
                                   CONSTRAINT unique_index UNIQUE (video_title, search_query_id))
                                 ');
         $query->execute();
