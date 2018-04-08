@@ -7,7 +7,7 @@ class YoutubeParser
     protected $htmlBody;
     protected $queryResult;
 
-    protected $videosAmount = 10;
+    protected $videosAmount = 5;
     protected $videos = [];
     protected $searchString;
 
@@ -37,8 +37,9 @@ class YoutubeParser
         $classname='yt-lockup-video';
         $nodes = $this->htmlBody->query("//*[contains(@class, '$classname')]/div/div/h3/a[contains(@class, 'yt-uix-tile-link')]");
 //        $nodes = $this->htmlBody->query("//*[contains(@class, '$classname')]/div/div/div[contains(@class, 'yt-lockup-description')]");
-
+        $i = 0;
         foreach($nodes as $node) {
+            if(++$i > $this->videosAmount) break;
             $this->openVideo($this->domain . $node->getAttribute('href'));
         }
     }
@@ -55,12 +56,13 @@ class YoutubeParser
         foreach ($nodes as $node) {
             $title = $node->nodeValue;
         }
-        echo '<br>';
+
         $nodes = $finder->query("//*[contains(@id, 'eow-description')]");
         foreach ($nodes as $node) {
             $description = $node->C14N();
+//            $description = substr($node->textContent,0, 50);
         }
-        echo '<br>';
+
         $nodes = $finder->query("//div[contains(@class, 'video-extras-sparkbar-likes')]");
         foreach ($nodes as $node) {
             $mark = (double) preg_replace("~width:\s*(\d+.\d+)%~", '$1', $node->getAttribute('style'));
@@ -73,7 +75,7 @@ class YoutubeParser
     {
         $this->videos[] = [
             'title' => $title,
-            'description' => $description,
+            'description' => htmlspecialchars($description),
             'mark' => $mark,
         ];
     }
