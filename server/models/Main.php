@@ -2,6 +2,26 @@
 
 class Main
 {
+    public function getMatchedQueries($searchString)
+    {
+        $connection = Container::get('databaseConnection')->get();
+        $query = $connection->prepare("SELECT * FROM search_queries WHERE search_query LIKE :search_query");
+
+        $query->execute([
+            ':search_query' => '%' . $searchString . '%'
+        ]);
+
+        $matchedQueries = [];
+        while($row = $query->fetch()) {
+            $matchedQueries[] = [
+                'id' => $row['id'],
+                'search_query' => $row['search_query']
+            ];
+        }
+
+        return $matchedQueries;
+    }
+
     public function saveResult($searchString, $result)
     {
         $previousQuery = $this->checkIsSearchQueryExists($searchString);
@@ -23,18 +43,7 @@ class Main
         $query->bindParam(':video_mark', $video['mark']);
         $query->bindParam(':video_description', $video['description']);
 
-        $result = $query->execute();
-
-//        if (!$result) {
-//            echo '<br>';
-//            print_r($query);
-//            echo '<br>';
-//            print_r($video);
-//            echo '<br>';
-//            echo $queryId;
-//            echo '<br>';
-//            exit('error while inserting query result');
-//        }
+        $query->execute();
     }
 
     private function checkIsSearchQueryExists($searchQuery)
