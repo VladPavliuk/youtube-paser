@@ -27,6 +27,18 @@
     color: #fff;
 }
 
+#search-button {
+    background-color: #ff5458;
+    position: relative;
+    left: -8px;
+    bottom: 5px;
+    height: 34px;
+    width: 35px;
+    background-image: url('../img/search-icon.png');
+    border: 2px solid #fe4a4a;
+    cursor: pointer;
+}
+
 .brand-icon {
     display: inline-block;
     text-transform: uppercase;
@@ -42,4 +54,21 @@
 
 .header {
 
+}
+
+.matched-queries-wrapper {
+
+}
+
+.matched-queries-wrapper ul {
+    list-style-type: none;
+    width: 180px;
+    display: inline-block;
+    padding: 5px;
+    text-align: left;
+    background-color: #dfdfdf;
+}
+
+.matched-queries-wrapper ul li {
+    padding: 3px;
 }

@@ -15,11 +15,24 @@ class Main
         while($row = $query->fetch()) {
             $matchedQueries[] = [
                 'id' => $row['id'],
-                'search_query' => $row['search_query']
+                'value' => $row['search_query']
             ];
         }
 
         return $matchedQueries;
+    }
+
+    public function getVideosInfoBySearchQuery($searchQuery)
+    {
+        $connection = Container::get('databaseConnection')->get();
+        $searchQueryObject = $this->checkIsSearchQueryExists($searchQuery);
+
+        $query = $connection->prepare("SELECT * FROM search_queries_videos WHERE search_query_id = :search_query_id");
+        $query->execute([
+            ':search_query_id' => $searchQueryObject["id"]
+        ]);
+
+        return $query->fetchAll();
     }
 
     public function saveResult($searchString, $result)

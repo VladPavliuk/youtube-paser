@@ -17,6 +17,13 @@ class MainController extends Controller
         );
     }
 
+    public function getQueryInfo($queryString)
+    {
+        return Container::get('response')->json(
+            Container::get($this->mainModel->getVideosInfoBySearchQuery($queryString))
+        );
+    }
+
     public function indexAction()
     {
         return Container::get('response')->json(['asd' => 'asd']);
