@@ -7,18 +7,20 @@ class YoutubeParser
     protected $htmlBody;
     protected $queryResult;
 
-    protected $videosAmount = 2;
+    protected $videosAmount = 5;
     protected $videos = [];
     protected $searchString;
 
     protected $htmlLoader;
     protected $domDocument;
     protected $domXPath;
+    protected $mainModel;
 
     public function __construct($htmlLoader)
     {
         $this->htmlLoader = $htmlLoader;
         $this->domDocument = new DOMDocument;
+        $this->mainModel = new Main;
     }
 
     public function getVideos($searchString)
@@ -40,7 +42,13 @@ class YoutubeParser
         $i = 0;
         foreach($nodes as $node) {
             if(++$i > $this->videosAmount) break;
-            $this->openVideo($this->domain . $node->getAttribute('href'));
+            $videoInDatabase = $this->mainModel->getVideoBySearchQuery($node->textContent, $this->searchString);
+
+            if($videoInDatabase) {
+                $this->addVideo($videoInDatabase['video_title'], $videoInDatabase['video_description'], $videoInDatabase['video_mark']);
+            } else {
+                $this->openVideo($this->domain . $node->getAttribute('href'));
+            }
         }
     }
 
@@ -71,10 +79,15 @@ class YoutubeParser
         $this->addVideo($title, $description, $mark);
     }
 
+    public function saveVideo($video, $searchQuery)
+    {
+        $this->mainModel->saveVideoWithSearchQuery($video, $searchQuery);
+    }
+
     private function addVideo($title, $description, $mark)
     {
         $this->videos[] = [
-            'title' => $title,
+            'title' => trim($title),
             'description' => htmlspecialchars($description),
             'mark' => $mark,
         ];

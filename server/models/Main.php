@@ -45,6 +45,29 @@ class Main
         }
     }
 
+    public function saveVideoWithSearchQuery($video, $searchQuery)
+    {
+        $previousQuery = $this->checkIsSearchQueryExists($searchQuery);
+        $queryId = $previousQuery ? $previousQuery["id"] : $this->saveQuery($searchQuery);
+
+        $this->saveVideo($video, $queryId);
+    }
+
+    public function getVideoBySearchQuery($videoTitle, $searchQuery)
+    {
+        $connection = Container::get('databaseConnection')->get();
+        $searchQueryObj = $this->checkIsSearchQueryExists($searchQuery);
+
+        $query = $connection->prepare("SELECT * FROM search_queries_videos WHERE search_query_id = :search_query_id AND video_title = :video_title");
+
+        $query->bindParam(':search_query_id', $searchQueryObj['id']);
+        $query->bindParam(':video_title', $videoTitle);
+
+        $query->execute();
+
+        return $query->rowCount() > 0 ? $query->fetch() : false;
+    }
+
     private function saveVideo($video, $queryId)
     {
         $connection = Container::get('databaseConnection')->get();

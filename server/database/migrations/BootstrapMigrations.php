@@ -7,7 +7,7 @@ class BootstrapMigrations
 {
     public function run()
     {
-        CreateSearchQueriesTable::run();
-        CreateSearchQueriesVideosTable::run();
+//        CreateSearchQueriesTable::run();
+//        CreateSearchQueriesVideosTable::run();
     }
 }
