@@ -168,7 +168,7 @@ var currentPage = {
         },
 
         clear: function () {
-            this.getTableBody().innerHeight = '';
+            this.getTableBody().innerHTML = '';
         },
 
         generateItem: function (title, mark, description) {
