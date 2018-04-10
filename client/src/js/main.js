@@ -171,16 +171,26 @@ var currentPage = {
             this.getTableBody().innerHTML = '';
         },
 
+        show: function() {
+            this.getElement().style.display = 'block';
+        },
+
+        hide: function() {
+            this.getElement().style.display = 'none';
+        },
+
         generateItem: function (title, mark, description) {
             var row = document.createElement('tr');
 
             var titleColumn = document.createElement('td');
             var markColumn = document.createElement('td');
             var descriptionColumn = document.createElement('td');
+            var descriptionWrapper = document.createElement('div');
 
             titleColumn.innerHTML = title;
             markColumn.innerHTML = mark;
-            descriptionColumn.innerHTML = description;
+            descriptionWrapper.innerHTML = description;
+            descriptionColumn.appendChild(descriptionWrapper);
 
             row.appendChild(titleColumn);
             row.appendChild(markColumn);
@@ -200,6 +210,8 @@ var currentPage = {
                 );
                 this.getTableBody().appendChild(newItem);
             }
+
+            this.show();
         }
     }
 };

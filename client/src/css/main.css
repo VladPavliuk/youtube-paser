@@ -1,6 +1,11 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    padding: 0 20%;
 }
 
 .pull-left {
@@ -101,4 +106,29 @@
 
 .matched-queries-wrapper ul li:hover {
     background-color: #d7d7d7;
+}
+
+#videos-table td {
+    padding: 5px;
+}
+
+#videos-table {
+    border-collapse: collapse;
+}
+
+#videos-table th, td {
+    border: 1px solid black;
+}
+
+#videos-table thead td {
+    padding: 10px;
+}
+
+#videos-table tbody tr td:nth-child(2) {
+    font-size: 20pt;
+}
+
+#videos-table tbody tr td:nth-child(3) div {
+    height: 100px;
+    overflow-y: scroll;
 }

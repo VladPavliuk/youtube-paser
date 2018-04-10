@@ -7,7 +7,7 @@ class YoutubeParser
     protected $htmlBody;
     protected $queryResult;
 
-    protected $videosAmount = 10;
+    protected $videosAmount = 4;
     protected $videos = [];
     protected $searchString;
 
@@ -30,7 +30,7 @@ class YoutubeParser
         foreach ($inputVideos as $video) {
             $outputVideos[] = [
                 'title' => $video['title'],
-                'mark' => $video['mark'],
+                'mark' => (int) $video['mark'] . '%',
                 'description' => htmlspecialchars_decode($video['description'])
             ];
         }
@@ -92,6 +92,7 @@ class YoutubeParser
         }
 
         $this->addVideo($title, $description, $mark);
+        $this->mainModel->saveVideoWithSearchQuery(array_values(array_slice($this->videos, -1))[0], $this->searchString);
     }
 
     public function saveVideo($video, $searchQuery)
