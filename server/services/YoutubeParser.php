@@ -7,7 +7,7 @@ class YoutubeParser
     protected $htmlBody;
     protected $queryResult;
 
-    protected $videosAmount = 5;
+    protected $videosAmount = 2;
     protected $videos = [];
     protected $searchString;
 

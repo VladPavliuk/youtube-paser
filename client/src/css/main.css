@@ -90,11 +90,15 @@
     list-style-type: none;
     width: 180px;
     display: inline-block;
-    padding: 5px;
     text-align: left;
-    background-color: #dfdfdf;
+    background-color: #e8e8e8;
 }
 
 .matched-queries-wrapper ul li {
-    padding: 3px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.matched-queries-wrapper ul li:hover {
+    background-color: #d7d7d7;
 }
