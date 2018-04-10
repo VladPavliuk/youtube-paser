@@ -1,3 +1,9 @@
+var clearSearchInput = (function() {
+    var searchInputElement = document.getElementById('search-input');
+    searchInputElement.value = '';
+})();
+
+
 var serverApi = {
     domain: 'http://localhost:8000',
     getVideosUri: function() { return serverApi.domain + '/' },
