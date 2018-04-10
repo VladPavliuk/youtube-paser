@@ -7,7 +7,7 @@ class YoutubeParser
     protected $htmlBody;
     protected $queryResult;
 
-    protected $videosAmount = 5;
+    protected $videosAmount = 2;
     protected $videos = [];
     protected $searchString;
 
@@ -21,6 +21,21 @@ class YoutubeParser
         $this->htmlLoader = $htmlLoader;
         $this->domDocument = new DOMDocument;
         $this->mainModel = new Main;
+    }
+
+    public function parseVideosDescriptionToHTML($inputVideos)
+    {
+        $outputVideos = [];
+
+        foreach ($inputVideos as $video) {
+            $outputVideos[] = [
+                'title' => $video['title'],
+                'mark' => $video['mark'],
+                'description' => htmlspecialchars_decode($video['description'])
+            ];
+        }
+
+        return $outputVideos;
     }
 
     public function getVideos($searchString)

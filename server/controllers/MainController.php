@@ -5,7 +5,9 @@ class MainController extends Controller
     public function searchAction($searchString)
     {
         $result = Container::get('youtubeParser')->getVideos($searchString);
-        $this->mainModel->saveResult($searchString, $result);
+//        $this->mainModel->saveResult($searchString, $result);
+
+        $result = Container::get('youtubeParser')->parseVideosDescriptionToHTML($result);
 
         return Container::get('response')->json($result);
     }

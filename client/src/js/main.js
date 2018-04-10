@@ -37,7 +37,15 @@ var serverApiMethods = {
     },
 
     makeSearchQuery: function (searchQuery) {
-        return serverApiRoutes.domain + '/search/' + searchQuery
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.response);
+                currentPage.videosTable.setItems(response);
+            }
+        };
+        xhttp.open("GET", serverApiRoutes.makeSearchQuery(searchQuery), true);
+        xhttp.send();
     },
 
     getQueryInfo: function (searchQuery) {
@@ -135,8 +143,8 @@ var currentPage = {
         },
 
         onClickHandler: function () {
-            this.getElement().addEventListener('click', function (event) {
-
+            this.getElement().addEventListener('click', function () {
+                serverApiMethods.makeSearchQuery(currentPage.searchInput.getText());
             });
         },
 
@@ -146,6 +154,52 @@ var currentPage = {
 
         hide: function() {
             this.getElement().style.display = 'none';
+        }
+    },
+    videosTable: {
+        id: 'videos-table',
+
+        getElement: function() {
+            return document.getElementById(this.id);
+        },
+
+        getTableBody: function() {
+            return document.querySelector('#' + this.id + ' tbody');
+        },
+
+        clear: function () {
+            this.getTableBody().innerHeight = '';
+        },
+
+        generateItem: function (title, mark, description) {
+            var row = document.createElement('tr');
+
+            var titleColumn = document.createElement('td');
+            var markColumn = document.createElement('td');
+            var descriptionColumn = document.createElement('td');
+
+            titleColumn.innerHTML = title;
+            markColumn.innerHTML = mark;
+            descriptionColumn.innerHTML = description;
+
+            row.appendChild(titleColumn);
+            row.appendChild(markColumn);
+            row.appendChild(descriptionColumn);
+
+            return row;
+        },
+
+        setItems: function (itemsList) {
+            this.clear();
+
+            for (var i = 0; i < itemsList.length; i++) {
+                var newItem = this.generateItem(
+                    itemsList[i].title,
+                    itemsList[i].mark,
+                    itemsList[i].description
+                );
+                this.getTableBody().appendChild(newItem);
+            }
         }
     }
 };
@@ -270,3 +324,4 @@ var showQueryInfo = function (videosList) {
 
 currentPage.searchInput.clearText();
 currentPage.searchInput.onInputHandler();
+currentPage.searchButton.onClickHandler();
