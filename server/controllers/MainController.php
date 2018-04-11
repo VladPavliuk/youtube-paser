@@ -19,15 +19,15 @@ class MainController extends Controller
         );
     }
 
-    public function getQueryInfo($queryString)
+    public function getQueryInfoAction($queryString)
     {
         return Container::get('response')->json(
-            Container::get($this->mainModel->getVideosInfoBySearchQuery($queryString))
+            $this->mainModel->getVideosInfoBySearchQuery($queryString)
         );
     }
 
     public function indexAction()
     {
-        return Container::get('response')->json(['asd' => 'asd']);
+        return Container::get('response')->json(['test' => 'test']);
     }
 }

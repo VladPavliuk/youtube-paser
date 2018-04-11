@@ -130,5 +130,5 @@ body {
 
 #videos-table tbody tr td:nth-child(3) div {
     height: 100px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }

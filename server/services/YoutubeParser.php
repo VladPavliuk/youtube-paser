@@ -7,7 +7,7 @@ class YoutubeParser
     protected $htmlBody;
     protected $queryResult;
 
-    protected $videosAmount = 4;
+    protected $videosAmount = 10;
     protected $videos = [];
     protected $searchString;
 
@@ -60,7 +60,7 @@ class YoutubeParser
             $videoInDatabase = $this->mainModel->getVideoBySearchQuery($node->textContent, $this->searchString);
 
             if($videoInDatabase) {
-                $this->addVideo($videoInDatabase['video_title'], $videoInDatabase['video_description'], $videoInDatabase['video_mark']);
+                $this->addVideo($videoInDatabase['video_title'], htmlspecialchars_decode($videoInDatabase['video_description']), $videoInDatabase['video_mark']);
             } else {
                 $this->openVideo($this->domain . $node->getAttribute('href'));
             }

@@ -26,13 +26,24 @@ class Main
     {
         $connection = Container::get('databaseConnection')->get();
         $searchQueryObject = $this->checkIsSearchQueryExists($searchQuery);
+        $videosList = [];
 
         $query = $connection->prepare("SELECT * FROM search_queries_videos WHERE search_query_id = :search_query_id");
+
         $query->execute([
-            ':search_query_id' => $searchQueryObject["id"]
+            ':search_query_id' => intval( $searchQueryObject["id"])
         ]);
 
-        return $query->fetchAll();
+        while ($row = $query->fetch()) {
+            $videosList[] = [
+                'id' => $row['id'],
+                'title' => $row['video_title'],
+                'mark' => $row['video_mark'],
+                'description' => htmlspecialchars_decode($row['video_description'])
+            ];
+        }
+
+        return $videosList;
     }
 
     public function saveResult($searchString, $result)
