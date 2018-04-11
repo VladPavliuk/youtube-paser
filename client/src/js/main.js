@@ -45,6 +45,7 @@ var serverApiMethods = {
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.response);
                 currentPage.videosTable.setItems(response);
+                serverApiMethods.getQueryInfo(searchQuery);
                 currentPage.loadingBar.hide();
             }
         };
@@ -217,7 +218,6 @@ var currentPage = {
             newItem.addEventListener('click', function (event) {
                 var searchQueryValue = event.target.getAttribute('data-value');
                 serverApiMethods.makeSearchQuery(searchQueryValue);
-                serverApiMethods.getQueryInfo(searchQueryValue);
             });
         },
 
@@ -264,7 +264,6 @@ var currentPage = {
             this.getElement().addEventListener('click', function () {
                 if (currentPage.searchInput.getText().length > 0) {
                     serverApiMethods.makeSearchQuery(currentPage.searchInput.getText());
-                    serverApiMethods.getQueryInfo(currentPage.searchInput.getText());
                 }
             });
         },

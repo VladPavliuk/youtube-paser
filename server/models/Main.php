@@ -15,7 +15,7 @@ class Main
         while($row = $query->fetch()) {
             $matchedQueries[] = [
                 'id' => $row['id'],
-                'value' => $row['search_query']
+                'value' => urldecode($row['search_query'])
             ];
         }
 
