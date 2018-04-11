@@ -5,6 +5,7 @@
     <title>Youtube parser</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="./src/css/main.css">
+    <link rel="stylesheet" href="src/css/main.css">
 </head>
 <body>
 
@@ -22,23 +23,27 @@
                placeholder="find some...">
         <button id="search-button" class="absolute" style="display: none;"></button>
 
-        <div class="matched-queries-wrapper" style="display: none">
+        <div class="matched-queries-wrapper">
             <ul id="similar-search-queries-list"></ul>
         </div>
     </div>
 
     <div class="result-wrapper">
-        <p>Amount in database:</p>
-        <p>Middle rating:</p>
-        <p>Videos Titles:</p>
+        <p id="amount-in-database" style="display: none"></p>
+        <p id="middle-rating" style="display: none"></p>
+        <p id="videos-titles" style="display: none"></p>
     </div>
 
     <div class="item-wrapper">
+        <h2 id="table-title" style="display: none;">
+            <hr>
+            Last 10 videos
+        </h2>
         <table id="videos-table" style="display: none;">
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Mark</th>
+                    <th>Rating</th>
                     <th>Description</th>
                 </tr>
             </thead>

@@ -6,15 +6,15 @@ var serverApiRoutes = {
     },
 
     getSimilarSearchQueries: function (searchString) {
-        return serverApiRoutes.domain + '/match-with-exists/' + searchString
+        return serverApiRoutes.domain + '/match-with-exists/' + searchString;
     },
 
     makeSearchQuery: function (searchQuery) {
-        return serverApiRoutes.domain + '/search/' + searchQuery
+        return serverApiRoutes.domain + '/search/' + searchQuery;
     },
 
     getQueryInfo: function (searchQuery) {
-        return serverApiRoutes.domain + '/get-query-info/' + searchQuery
+        return serverApiRoutes.domain + '/get-query-info/' + searchQuery;
     }
 };
 
@@ -37,6 +37,8 @@ var serverApiMethods = {
     },
 
     makeSearchQuery: function (searchQuery) {
+        currentPage.similarSearchQueriesList.hide();
+        currentPage.searchInput.setText(searchQuery);
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -49,7 +51,20 @@ var serverApiMethods = {
     },
 
     getQueryInfo: function (searchQuery) {
-        return serverApiRoutes.domain + '/get-query-info/' + searchQuery
+        console.log(serverApiRoutes.getQueryInfo(searchQuery));
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                var response = JSON.parse(this.response);
+
+                currentPage.videosInfoBlock.amountInDatabase.setAmount(response);
+                currentPage.videosInfoBlock.middleRating.setMiddleRating(response);
+                currentPage.videosInfoBlock.titlesList.setTitles(response);
+            }
+        };
+        xhttp.open("GET", serverApiRoutes.getQueryInfo(searchQuery), true);
+        xhttp.send();
     }
 
 };
@@ -76,6 +91,14 @@ var currentPage = {
             });
         },
 
+        onEnterHandler: function () {
+            this.getElement().addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    currentPage.searchButton.getElement().click();
+                }
+            });
+        },
+
         getText: function () {
             return this.getElement().value;
         },
@@ -88,6 +111,85 @@ var currentPage = {
             this.setText('');
         }
     },
+    videosInfoBlock: {
+        amountInDatabase: {
+            id: 'amount-in-database',
+            initialText: 'Amount in database: ',
+
+            getElement: function () {
+                return document.getElementById(this.id);
+            },
+
+            setAmount: function (videosList) {
+                this.getElement().innerHTML = this.initialText + videosList.length;
+                this.show();
+            },
+
+            show: function () {
+                this.getElement().style.display = 'block';
+
+            },
+
+            hide: function () {
+                this.getElement().style.display = 'none';
+            }
+        },
+        middleRating: {
+            id: 'middle-rating',
+            initialText: 'Middle rating: ',
+
+            getElement: function () {
+                return document.getElementById(this.id);
+            },
+
+            setMiddleRating: function (videosList) {
+                var i, middleRating = 0;
+                for (i = 0; i < videosList.length; i++) {
+                    middleRating += parseInt(videosList[i].mark);
+                }
+                middleRating = parseInt(middleRating / videosList.length) + '%';
+
+                this.getElement().innerHTML = this.initialText + middleRating;
+                this.show();
+            },
+
+            show: function () {
+                this.getElement().style.display = 'block';
+            },
+
+            hide: function () {
+                this.getElement().style.display = 'none';
+            }
+        },
+        titlesList: {
+            id: 'videos-titles',
+            initialText: 'Videos Titles: ',
+
+            getElement: function () {
+                return document.getElementById(this.id);
+            },
+
+            setTitles: function (videosList) {
+                this.getElement().innerHTML = this.initialText;
+
+                for (var i = 0; i < videosList.length; i++) {
+                    var spanElement = document.createElement('span');
+                    spanElement.innerHTML = videosList[i].title;
+                    this.getElement().appendChild(spanElement);
+                }
+
+                this.show();
+            },
+
+            show: function () {
+                this.getElement().style.display = 'block';
+            },
+
+            hide: function () {
+                this.getElement().style.display = 'none';
+            }
+        }
+    },
     similarSearchQueriesList: {
         id: 'similar-search-queries-list',
 
@@ -98,13 +200,13 @@ var currentPage = {
         onItemsClickHandler: function () {
             document.querySelector('li[data-value]').addEventListener('click', function (event) {
                 var searchQueryValue = event.target.getAttribute('data-value');
-                getQueryInfo(searchQueryValue);
-                makeSearchQuery(searchQueryValue);
+                serverApiMethods.makeSearchQuery(searchQueryValue);
+                serverApiMethods.getQueryInfo(searchQueryValue);
             });
         },
 
         show: function () {
-            this.getElement().parentNode.style.display = 'block';
+            this.getElement().parentNode.style.display = 'inline-block';
         },
 
         hide: function () {
@@ -138,32 +240,33 @@ var currentPage = {
     searchButton: {
         id: 'search-button',
 
-        getElement: function() {
+        getElement: function () {
             return document.getElementById(this.id);
         },
 
         onClickHandler: function () {
             this.getElement().addEventListener('click', function () {
                 serverApiMethods.makeSearchQuery(currentPage.searchInput.getText());
+                serverApiMethods.getQueryInfo(currentPage.searchInput.getText());
             });
         },
 
-        show: function() {
+        show: function () {
             this.getElement().style.display = 'inline';
         },
 
-        hide: function() {
+        hide: function () {
             this.getElement().style.display = 'none';
         }
     },
     videosTable: {
         id: 'videos-table',
 
-        getElement: function() {
+        getElement: function () {
             return document.getElementById(this.id);
         },
 
-        getTableBody: function() {
+        getTableBody: function () {
             return document.querySelector('#' + this.id + ' tbody');
         },
 
@@ -171,12 +274,14 @@ var currentPage = {
             this.getTableBody().innerHTML = '';
         },
 
-        show: function() {
+        show: function () {
             this.getElement().style.display = 'block';
+            document.getElementById('table-title').style.display = 'block';
         },
 
-        hide: function() {
+        hide: function () {
             this.getElement().style.display = 'none';
+            document.getElementById('table-title').style.display = 'none';
         },
 
         generateItem: function (title, mark, description) {
@@ -216,124 +321,7 @@ var currentPage = {
     }
 };
 
-// var showMatchedQueries = function (arrayOfMatchedQueries) {
-//     var listOfMatchedQueriesElement = document.getElementById('matched-queries-list');
-//
-//     if (arrayOfMatchedQueries.length > 0) {
-//         listOfMatchedQueriesElement.style.display = 'block';
-//         var list = document.querySelector('#matched-queries-list ul');
-//         list.innerHTML = '';
-//         for (var i = 0; i < arrayOfMatchedQueries.length; i++) {
-//             var listItem = document.createElement("li");
-//             listItem.innerText = arrayOfMatchedQueries[i].value;
-//             listItem.setAttribute('data-value', arrayOfMatchedQueries[i].value);
-//             list.appendChild(listItem);
-//             addEventToListItems();
-//         }
-//
-//     } else {
-//         listOfMatchedQueriesElement.style.display = 'none'
-//     }
-// };
-
-// function loadDoc() {
-//     var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log(JSON.parse(this.response));
-//             // document.getElementById("demo").innerHTML = this.responseText;
-//         }
-//     };
-//     xhttp.open("GET", serverApiRoutes.getVideosUri(), true);
-//     // xhttp.setRequestHeader('Content-Type', 'ap   splication/json');
-//     xhttp.send();
-// }
-//
-// loadDoc();
-
-// var showSearchButton = function () {
-//     var searchButtonElement = document.getElementById('search-button');
-//     searchButtonElement.style.display = 'inline';
-// };
-//
-// var hideSearchButton = function () {
-//     var searchButtonElement = document.getElementById('search-button');
-//     searchButtonElement.style.display = 'none';
-// };
-
-var makeSearchQuery = function (searchQuery) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var response = JSON.parse(this.response);
-            console.log(response);
-        }
-    };
-    xhttp.open("GET", serverApiRoutes.makeSearchQuery(searchQuery), true);
-    xhttp.send();
-};
-
-
-var getQueryInfo = function (queryString) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var response = JSON.parse(this.response);
-            showQueryInfo(response);
-        }
-    };
-    xhttp.open("GET", serverApiRoutes.getQueryInfo(queryString), true);
-    // xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.send();
-};
-
-// var matchWithQueries = function (inputString) {
-//     var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             var response = JSON.parse(this.response);
-//
-//             showMatchedQueries(response);
-//             // document.getElementById("demo").innerHTML = this.responseText;
-//         }
-//     };
-//     xhttp.open("GET", serverApiRoutes.getSimilarSearchQueries(inputString), true);
-//     // xhttp.setRequestHeader('Content-Type', 'application/json');
-//     xhttp.send();
-// };
-
-// var addEventToListItems = function () {
-//     document.querySelector('li[data-value]').addEventListener('click', function (event) {
-//         var searchQueryValue = event.target.getAttribute('data-value');
-//         getQueryInfo(searchQueryValue);
-//         makeSearchQuery(searchQueryValue);
-//     });
-// };
-
-var showQueryInfo = function (videosList) {
-    for (var i = 0; i < videosList.length; i++) {
-        console.log(videosList[i]);
-    }
-};
-
-
-// document.getElementById("search-input").addEventListener("input", function () {
-//     var inputString = currentPage.getSearchQueryString();
-//
-//     if (inputString.length > 0) {
-//         showSearchButton(inputString);
-//         matchWithQueries(inputString);
-//     } else {
-//         document.getElementById('matched-queries-list').style.display = 'none';
-//         hideSearchButton(inputString);
-//     }
-// });
-
-
-// document.getElementById("search-button").addEventListener("click", function (event) {
-//
-// });
-
 currentPage.searchInput.clearText();
 currentPage.searchInput.onInputHandler();
+currentPage.searchInput.onEnterHandler();
 currentPage.searchButton.onClickHandler();

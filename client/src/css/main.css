@@ -88,15 +88,20 @@ body {
 }
 
 .matched-queries-wrapper {
-
+    position: relative;
+    display: inline-block;
 }
 
 .matched-queries-wrapper ul {
     list-style-type: none;
-    width: 180px;
+    position: absolute;
+    width: 191px;
     display: inline-block;
     text-align: left;
-    background-color: #e8e8e8;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.75);
+    left: -195px;
+    top: 17px;
 }
 
 .matched-queries-wrapper ul li {
@@ -131,4 +136,12 @@ body {
 #videos-table tbody tr td:nth-child(3) div {
     height: 100px;
     overflow-y: auto;
+}
+
+#videos-titles span {
+    background-color: #e3e3e3;
+    margin: 5px;
+    padding: 2px;
+    border-radius: 5px;
+    line-height: 35px;
 }
