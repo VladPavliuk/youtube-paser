@@ -158,6 +158,10 @@
     padding: 5px;
 }
 
+#videos-table tbody tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
 #videos-table {
     border-collapse: collapse;
 }

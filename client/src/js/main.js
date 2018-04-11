@@ -53,7 +53,6 @@ var serverApiMethods = {
     },
 
     getQueryInfo: function (searchQuery) {
-        console.log(serverApiRoutes.getQueryInfo(searchQuery));
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -75,15 +74,15 @@ var currentPage = {
     loadingBar: {
         id: 'loading-bar-wrapper',
 
-        getElement: function() {
+        getElement: function () {
             return document.getElementById(this.id);
         },
 
-        show: function() {
+        show: function () {
             this.getElement().style.display = 'block';
         },
 
-        hide: function() {
+        hide: function () {
             this.getElement().style.display = 'none';
         }
     },
@@ -214,8 +213,8 @@ var currentPage = {
             return document.getElementById(this.id);
         },
 
-        onItemsClickHandler: function () {
-            document.querySelector('li[data-value]').addEventListener('click', function (event) {
+        addItemsClickHandler: function (newItem) {
+            newItem.addEventListener('click', function (event) {
                 var searchQueryValue = event.target.getAttribute('data-value');
                 serverApiMethods.makeSearchQuery(searchQueryValue);
                 serverApiMethods.getQueryInfo(searchQueryValue);
@@ -238,8 +237,8 @@ var currentPage = {
             this.clear();
             for (var i = 0; i < itemsList.length; i++) {
                 var newItem = this.generateItem(itemsList[i].value);
+                this.addItemsClickHandler(newItem);
                 this.getElement().appendChild(newItem);
-                this.onItemsClickHandler();
             }
 
             itemsList.length > 0 ? this.show() : this.hide();
@@ -263,8 +262,10 @@ var currentPage = {
 
         onClickHandler: function () {
             this.getElement().addEventListener('click', function () {
-                serverApiMethods.makeSearchQuery(currentPage.searchInput.getText());
-                serverApiMethods.getQueryInfo(currentPage.searchInput.getText());
+                if (currentPage.searchInput.getText().length > 0) {
+                    serverApiMethods.makeSearchQuery(currentPage.searchInput.getText());
+                    serverApiMethods.getQueryInfo(currentPage.searchInput.getText());
+                }
             });
         },
 
