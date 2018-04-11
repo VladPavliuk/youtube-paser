@@ -39,11 +39,13 @@ var serverApiMethods = {
     makeSearchQuery: function (searchQuery) {
         currentPage.similarSearchQueriesList.hide();
         currentPage.searchInput.setText(searchQuery);
+        currentPage.loadingBar.show();
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.response);
                 currentPage.videosTable.setItems(response);
+                currentPage.loadingBar.hide();
             }
         };
         xhttp.open("GET", serverApiRoutes.makeSearchQuery(searchQuery), true);
@@ -70,6 +72,21 @@ var serverApiMethods = {
 };
 
 var currentPage = {
+    loadingBar: {
+        id: 'loading-bar-wrapper',
+
+        getElement: function() {
+            return document.getElementById(this.id);
+        },
+
+        show: function() {
+            this.getElement().style.display = 'block';
+        },
+
+        hide: function() {
+            this.getElement().style.display = 'none';
+        }
+    },
     searchInput: {
         id: 'search-input',
 
