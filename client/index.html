@@ -16,22 +16,37 @@
 </div>
 
 <div class="main-wrapper">
+
     <div class="header p-10 text-center">
         <div class="brand-icon white-text big-text p-5">
             <img src="./src/img/video-play-icon.png" class="pull-left" alt="icon">
             <span class="pull-left">Youtube parser</span>
         </div>
     </div>
-    <div class="input-wrapper text-center relative">
+
+    <div class="queries-list-wrapper">
+        <h2>Search queries list</h2>
+        <div id="queries-list"></div>
+    </div>
+
+    <!-- SEARCH QUERY INPUT -->
+    <!--<div class="input-wrapper text-center relative">-->
+        <!--<input type="text"-->
+               <!--class="acute-border"-->
+               <!--id="search-input"-->
+               <!--placeholder="find some...">-->
+        <!--<button id="search-button" class="absolute" style="display: none"></button>-->
+
+        <!--<div class="matched-queries-wrapper">-->
+            <!--<ul id="similar-search-queries-list"></ul>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="add-new-query-wrapper">
+        <label for="add-new-query-input">Add new query</label>
         <input type="text"
                class="acute-border"
-               id="search-input"
-               placeholder="find some...">
-        <button id="search-button" class="absolute" style="display: none;"></button>
-
-        <div class="matched-queries-wrapper">
-            <ul id="similar-search-queries-list"></ul>
-        </div>
+               id="add-new-query-input"><button id="add-new-query-button"></button>
     </div>
 
     <div class="result-wrapper">
@@ -41,10 +56,10 @@
     </div>
 
     <div class="item-wrapper">
-        <h2 id="table-title" style="display: none;">
+        <h2 id="table-title" style="display: none">
             Last 10 videos
         </h2>
-        <table id="videos-table" style="display: none;">
+        <table id="videos-table" style="display: none">
             <thead>
                 <tr>
                     <th>Title</th>

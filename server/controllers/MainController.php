@@ -17,6 +17,13 @@ class MainController extends Controller
         );
     }
 
+    public function allSearchQueriesAction()
+    {
+        return Container::get('response')->json(
+            $this->mainModel->getAllSearchQueriesAction()
+        );
+    }
+
     public function getQueryInfoAction($queryString)
     {
         return Container::get('response')->json(

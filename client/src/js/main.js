@@ -1,8 +1,8 @@
 var serverApiRoutes = {
     domain: 'http://localhost:8000',
 
-    getVideosUri: function () {
-        return serverApiRoutes.domain + '/'
+    getAllQueriesLis: function() {
+        return serverApiRoutes.domain + '/all-search-queries'
     },
 
     getSimilarSearchQueries: function (searchString) {
@@ -20,8 +20,16 @@ var serverApiRoutes = {
 
 var serverApiMethods = {
 
-    getVideosUri: function () {
-        return serverApiRoutes.domain + '/'
+    getAllQueriesLis: function() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.response);
+                currentPage.queriesList.setItems(response);
+            }
+        };
+        xhttp.open("GET", serverApiRoutes.getAllQueriesLis(), true);
+        xhttp.send();
     },
 
     getSimilarSearchQueries: function (searchString) {
@@ -72,6 +80,34 @@ var serverApiMethods = {
 };
 
 var currentPage = {
+    queriesList: {
+        id: 'queries-list',
+
+        getElement: function() {
+            return document.getElementById(this.id);
+        },
+
+        setItems: function(itemsList) {
+            this.clear();
+
+            for(var i = 0; i < itemsList.length; i++) {
+                var newItem = this._generateItem(itemsList[i]['value']);
+                this.getElement().appendChild(newItem);
+            }
+        },
+
+        clear: function() {
+            this.getElement().innerHTML = '';
+        },
+
+        _generateItem: function (text) {
+            var newItem = document.createElement('span');
+            newItem.innerHTML = text;
+
+            return newItem;
+        }
+    }
+    ,
     loadingBar: {
         id: 'loading-bar-wrapper',
 
@@ -144,7 +180,6 @@ var currentPage = {
 
             show: function () {
                 this.getElement().style.display = 'block';
-
             },
 
             hide: function () {
@@ -236,7 +271,7 @@ var currentPage = {
         setItems: function (itemsList) {
             this.clear();
             for (var i = 0; i < itemsList.length; i++) {
-                var newItem = this.generateItem(itemsList[i].value);
+                var newItem = this._generateItem(itemsList[i].value);
                 this.addItemsClickHandler(newItem);
                 this.getElement().appendChild(newItem);
             }
@@ -244,7 +279,7 @@ var currentPage = {
             itemsList.length > 0 ? this.show() : this.hide();
         },
 
-        generateItem: function (text) {
+        _generateItem: function (text) {
             var item = document.createElement('li');
             item.innerText = text;
             item.setAttribute('data-value', text);
@@ -301,7 +336,7 @@ var currentPage = {
             document.getElementById('table-title').style.display = 'none';
         },
 
-        generateItem: function (title, mark, description) {
+        _generateItem: function (title, mark, description) {
             var row = document.createElement('tr');
 
             var titleColumn = document.createElement('td');
@@ -325,7 +360,7 @@ var currentPage = {
             this.clear();
 
             for (var i = 0; i < itemsList.length; i++) {
-                var newItem = this.generateItem(
+                var newItem = this._generateItem(
                     itemsList[i].title,
                     itemsList[i].mark,
                     itemsList[i].description
@@ -338,6 +373,7 @@ var currentPage = {
     }
 };
 
+serverApiMethods.getAllQueriesLis();
 currentPage.searchInput.clearText();
 currentPage.searchInput.onInputHandler();
 currentPage.searchInput.onEnterHandler();

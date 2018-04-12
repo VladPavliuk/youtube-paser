@@ -2,6 +2,24 @@
 
 class Main
 {
+    public function getAllSearchQueriesAction()
+    {
+        $queriesList = [];
+
+        $connection = Container::get('databaseConnection')->get();
+        $query = $connection->prepare("SELECT * FROM search_queries");
+        $query->execute();
+
+        while($row = $query->fetch()) {
+            $queriesList[] = [
+                'id' => $row['id'],
+                'value' => urldecode($row['search_query'])
+            ];
+        }
+
+        return $queriesList;
+    }
+
     public function getMatchedQueries($searchString)
     {
         $connection = Container::get('databaseConnection')->get();
