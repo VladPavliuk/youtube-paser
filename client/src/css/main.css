@@ -24,6 +24,10 @@
     position: absolute;
 }
 
+.pr-5 {
+    padding-right: 5px;
+}
+
 .p-10 {
     padding: 10px;
 }
@@ -211,6 +215,7 @@
     background-repeat: no-repeat;
     background-color: #02a6ff;
     border: none;
+    transition: .2s all;
     height: 30px;
     width: 40px;
     position: relative;
@@ -219,16 +224,33 @@
 }
 
 .add-new-query-wrapper button:hover {
-    background-color: #e04a4d;
+    background-color: #028eda;
+    cursor: pointer;
+}
+
+.result-wrapper button {
+    margin-top: 10px;
+    background-color: #02a6ff;
+    border: none;
+    padding: 5px 13px;
+    font-size: 14pt;
+}
+
+.result-wrapper button:hover {
+    background-color: #028eda;
     cursor: pointer;
 }
 
 .add-new-query-wrapper label {
     display: block;
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 .add-new-query-wrapper input:focus  {
     box-shadow: 0 0 5px rgba(81, 203, 238, 1);
     border: 1px solid rgba(81, 203, 238, 1);
+}
+
+.result-wrapper h2 {
+    margin-top: 15px;
 }

@@ -1,7 +1,7 @@
 var serverApiRoutes = {
     domain: 'http://localhost:8000',
 
-    getAllQueriesLis: function() {
+    getAllQueriesLis: function () {
         return serverApiRoutes.domain + '/all-search-queries'
     },
 
@@ -20,7 +20,7 @@ var serverApiRoutes = {
 
 var serverApiMethods = {
 
-    getAllQueriesLis: function() {
+    getAllQueriesLis: function () {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -45,15 +45,15 @@ var serverApiMethods = {
     },
 
     makeSearchQuery: function (searchQuery) {
-        currentPage.similarSearchQueriesList.hide();
-        currentPage.searchInput.setText(searchQuery);
+        // currentPage.similarSearchQueriesList.hide();
+        // currentPage.searchInput.setText(searchQuery);
         currentPage.loadingBar.show();
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.response);
-                currentPage.videosTable.setItems(response);
-                serverApiMethods.getQueryInfo(searchQuery);
+                // currentPage.videosTable.setItems(response);
+                // serverApiMethods.getQueryInfo(searchQuery);
                 currentPage.loadingBar.hide();
             }
         };
@@ -61,8 +61,26 @@ var serverApiMethods = {
         xhttp.send();
     },
 
+    getVideosByQuery: function (searchQuery) {
+        currentPage.loadingBar.show();
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.response);
+                currentPage.videosTable.setItems(response);
+                // serverApiMethods.getQueryInfo(searchQuery);
+                currentPage.loadingBar.hide();
+            }
+        };
+        xhttp.open("GET", serverApiRoutes.getQueryInfo(searchQuery), true);
+        xhttp.send();
+    },
+
     getQueryInfo: function (searchQuery) {
         var xhttp = new XMLHttpRequest();
+        currentPage.videosTable.hide();
+
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
 
@@ -71,6 +89,7 @@ var serverApiMethods = {
                 currentPage.videosInfoBlock.amountInDatabase.setAmount(response);
                 currentPage.videosInfoBlock.middleRating.setMiddleRating(response);
                 currentPage.videosInfoBlock.titlesList.setTitles(response);
+                currentPage.videosInfoBlock.show();
             }
         };
         xhttp.open("GET", serverApiRoutes.getQueryInfo(searchQuery), true);
@@ -82,21 +101,30 @@ var serverApiMethods = {
 var currentPage = {
     queriesList: {
         id: 'queries-list',
+        selectedQuery: '',
 
-        getElement: function() {
+        getElement: function () {
             return document.getElementById(this.id);
         },
 
-        setItems: function(itemsList) {
+        setItems: function (itemsList) {
             this.clear();
 
-            for(var i = 0; i < itemsList.length; i++) {
+            for (var i = 0; i < itemsList.length; i++) {
                 var newItem = this._generateItem(itemsList[i]['value']);
+                this.addItemClickHandler(newItem);
                 this.getElement().appendChild(newItem);
             }
         },
 
-        clear: function() {
+        addItemClickHandler: function (itemElement) {
+            itemElement.addEventListener('click', function (event) {
+                currentPage.queriesList.selectedQuery = event.target.innerHTML;
+                serverApiMethods.getQueryInfo(currentPage.queriesList.selectedQuery);
+            });
+        },
+
+        clear: function () {
             this.getElement().innerHTML = '';
         },
 
@@ -106,8 +134,42 @@ var currentPage = {
 
             return newItem;
         }
-    }
-    ,
+    },
+    addNewQueryButton: {
+        id: 'add-new-query-button',
+
+        getElement: function () {
+            return document.getElementById(this.id);
+        },
+
+        addClickEvent: function () {
+            this.getElement().addEventListener('click', function () {
+
+                if (currentPage.newQueryInput.getText().length > 0) {
+                    serverApiMethods.makeSearchQuery(currentPage.newQueryInput.getText());
+                }
+            });
+        }
+    },
+    newQueryInput: {
+        id: 'add-new-query-input',
+
+        getElement: function () {
+            return document.getElementById(this.id);
+        },
+
+        getText: function () {
+            return this.getElement().value;
+        },
+
+        setText: function (string) {
+            this.getElement().value = string;
+        },
+
+        clearText: function () {
+            this.setText('');
+        }
+    },
     loadingBar: {
         id: 'loading-bar-wrapper',
 
@@ -130,7 +192,7 @@ var currentPage = {
             return document.getElementById(currentPage.searchInput.id);
         },
 
-        onInputHandler: function () {
+        addInputHandler: function () {
             this.getElement().addEventListener("input", function () {
                 var inputString = currentPage.searchInput.getText();
 
@@ -144,7 +206,7 @@ var currentPage = {
             });
         },
 
-        onEnterHandler: function () {
+        addEnterHandler: function () {
             this.getElement().addEventListener("keyup", function (event) {
                 if (event.keyCode === 13) {
                     currentPage.searchButton.getElement().click();
@@ -240,6 +302,32 @@ var currentPage = {
             hide: function () {
                 this.getElement().style.display = 'none';
             }
+        },
+
+        showVideosButton: {
+            id: 'show-videos',
+
+            getElement: function() {
+                return document.getElementById(this.id)
+            },
+
+            addClickEvent: function() {
+                this.getElement().addEventListener('click', function () {
+                    serverApiMethods.getVideosByQuery(currentPage.queriesList.selectedQuery);
+                });
+            }
+        },
+
+        getElement: function() {
+            return document.getElementsByClassName('result-wrapper')[0];
+        },
+
+        show: function() {
+            this.getElement().style.display = 'block';
+        },
+
+        hide: function() {
+            this.getElement().style.display = 'none';
         }
     },
     similarSearchQueriesList: {
@@ -295,7 +383,7 @@ var currentPage = {
             return document.getElementById(this.id);
         },
 
-        onClickHandler: function () {
+        addClickHandler: function () {
             this.getElement().addEventListener('click', function () {
                 if (currentPage.searchInput.getText().length > 0) {
                     serverApiMethods.makeSearchQuery(currentPage.searchInput.getText());
@@ -374,7 +462,10 @@ var currentPage = {
 };
 
 serverApiMethods.getAllQueriesLis();
+currentPage.addNewQueryButton.addClickEvent();
+currentPage.videosInfoBlock.showVideosButton.addClickEvent();
+currentPage.newQueryInput.clearText();
 currentPage.searchInput.clearText();
-currentPage.searchInput.onInputHandler();
-currentPage.searchInput.onEnterHandler();
-currentPage.searchButton.onClickHandler();
+currentPage.searchInput.addInputHandler();
+currentPage.searchInput.addEnterHandler();
+currentPage.searchButton.addClickHandler();
