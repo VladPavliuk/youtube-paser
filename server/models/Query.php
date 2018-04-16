@@ -1,6 +1,6 @@
 <?php
 
-class Query
+class Query extends Model
 {
     public function index()
     {
@@ -31,19 +31,12 @@ class Query
 
     public function show($id)
     {
-        $queryObject = [];
         $query = db()->prepare("SELECT * FROM search_queries WHERE id = :id");
         $query->execute([
             ':id' => $id
         ]);
-        while($row = $query->fetch()) {
-            $queryObject = [
-                'id', $row['id'],
-                'search_query', $row['search_query']
-            ];
-        }
 
-        return $queryObject;
+        return $this->getFields($query->fetch(), 'id', 'search_query');
     }
 
     public function update()
