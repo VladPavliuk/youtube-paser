@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'POST:queries' => 'Main/',
+    'POST:queries' => 'Queries/store',
     'GET:queries' => 'Queries/index',
 
     'GET:all-search-queries' => 'Main/allSearchQueries',

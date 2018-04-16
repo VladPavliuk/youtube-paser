@@ -9,7 +9,9 @@ class QueriesController extends Controller
 
     public function storeAction()
     {
-
+        return response()->json($this->queryModel->store([
+            'title' => request()->getPostsVariables()['title']
+        ]));
     }
 
     public function showAction()

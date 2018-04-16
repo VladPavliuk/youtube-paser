@@ -19,9 +19,14 @@ class Query
         return $queriesList;
     }
 
-    public function store()
+    public function store($queryObj)
     {
+        $query = db()->prepare("INSERT INTO search_queries (search_query) VALUE (:search_query)");
+        $query->execute([
+            'search_query' => $queryObj['title']
+        ]);
 
+        return true;
     }
 
     public function show()

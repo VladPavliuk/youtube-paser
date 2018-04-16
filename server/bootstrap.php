@@ -13,6 +13,7 @@ require_once('./router/Router.php');
 require_once('./services/HtmlLoader.php');
 require_once('./services/YoutubeParser.php');
 require_once('./services/Response.php');
+require_once('./services/Request.php');
 
 require_once('./Container.php');
 
@@ -23,6 +24,7 @@ Container::set('youtubeParser', new YoutubeParser(
 );
 Container::set('bootstrapMigrations', new BootstrapMigrations);
 Container::set('response', new Response);
+Container::set('request', new Request);
 Container::set('router', new Router);
 
 /**

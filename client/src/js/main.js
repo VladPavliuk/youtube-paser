@@ -1,6 +1,16 @@
 var serverApiRoutes = {
     domain: 'http://localhost:8000',
 
+    queries: {
+        store: function () {
+            return serverApiRoutes.domain + '/queries';
+        },
+
+        index: function () {
+            return serverApiRoutes.domain + '/queries';
+        }
+    },
+
     getAllQueriesLis: function () {
         return serverApiRoutes.domain + '/queries'
     },
@@ -18,19 +28,64 @@ var serverApiRoutes = {
     }
 };
 
-var serverApiMethods = {
-
-    getAllQueriesLis: function () {
+var server = {
+    request: function (requestObject) {
         var xhttp = new XMLHttpRequest();
+
         xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.response);
-                currentPage.queriesList.setItems(response);
+            if (requestObject.hasOwnProperty('callback') && this.readyState === 4 && this.status === 200) {
+                requestObject['callback'](JSON.parse(this.response));
             }
         };
-        xhttp.open("GET", serverApiRoutes.getAllQueriesLis(), true);
-        xhttp.send();
+        xhttp.open(requestObject['method'], requestObject['uri'], true);
+        if (requestObject.hasOwnProperty('body')) {
+            xhttp.send(this._createFormDataObject(requestObject['body']));
+        } else {
+            xhttp.send();
+        }
     },
+
+    _createFormDataObject(inputObject) {
+        var outputObject = new FormData();
+        for(var item in inputObject) if (inputObject.hasOwnProperty(item)) {
+            outputObject.append(item, inputObject[item]);
+        }
+        return outputObject;
+    }
+};
+
+var serverApiMethods = {
+    queries: {
+        store: function (body, callback) {
+            server.request({
+                method: 'POST',
+                uri: serverApiRoutes.queries.store(),
+                body: body,
+                callback: callback
+            });
+        },
+
+        index: function (callback) {
+            server.request({
+                method: 'GET',
+                uri: serverApiRoutes.queries.index(),
+                callback: callback
+            });
+        }
+    },
+
+
+    // getAllQueriesLis: function () {
+    //     var xhttp = new XMLHttpRequest();
+    //     xhttp.onreadystatechange = function () {
+    //         if (this.readyState == 4 && this.status == 200) {
+    //             var response = JSON.parse(this.response);
+    //             currentPage.queriesList.setItems(response);
+    //         }
+    //     };
+    //     xhttp.open("GET", serverApiRoutes.getAllQueriesLis(), true);
+    //     xhttp.send();
+    // },
 
     getSimilarSearchQueries: function (searchString) {
         var xhttp = new XMLHttpRequest();
@@ -144,9 +199,16 @@ var currentPage = {
 
         addClickEvent: function () {
             this.getElement().addEventListener('click', function () {
+                var queryString = currentPage.newQueryInput.getText();
 
-                if (currentPage.newQueryInput.getText().length > 0) {
-                    serverApiMethods.makeSearchQuery(currentPage.newQueryInput.getText());
+                if (queryString.length > 0) {
+                    serverApiMethods.queries.store({
+                        title: queryString
+                    }, function(response) {
+                        console.log(response);
+                    });
+
+                    // serverApiMethods.makeSearchQuery(currentPage.newQueryInput.getText());
                 }
             });
         }
@@ -307,26 +369,26 @@ var currentPage = {
         showVideosButton: {
             id: 'show-videos',
 
-            getElement: function() {
+            getElement: function () {
                 return document.getElementById(this.id)
             },
 
-            addClickEvent: function() {
+            addClickEvent: function () {
                 this.getElement().addEventListener('click', function () {
                     serverApiMethods.getVideosByQuery(currentPage.queriesList.selectedQuery);
                 });
             }
         },
 
-        getElement: function() {
+        getElement: function () {
             return document.getElementsByClassName('result-wrapper')[0];
         },
 
-        show: function() {
+        show: function () {
             this.getElement().style.display = 'block';
         },
 
-        hide: function() {
+        hide: function () {
             this.getElement().style.display = 'none';
         }
     },
@@ -461,7 +523,10 @@ var currentPage = {
     }
 };
 
-serverApiMethods.getAllQueriesLis();
+serverApiMethods.queries.index(function (response) {
+    currentPage.queriesList.setItems(response);
+});
+
 currentPage.addNewQueryButton.addClickEvent();
 currentPage.videosInfoBlock.showVideosButton.addClickEvent();
 currentPage.newQueryInput.clearText();
