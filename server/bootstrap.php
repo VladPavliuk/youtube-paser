@@ -8,6 +8,7 @@ require_once("./models/interfaces/IStandardActions.php");
 require_once("./models/Model.php");
 require_once("./models/Main.php");
 require_once("./models/Query.php");
+require_once("./models/Video.php");
 
 require_once("./router/AnalyzerURI.php");
 require_once("./router/AnalyzerInnerPath.php");
@@ -17,6 +18,7 @@ require_once('./services/YoutubeParser.php');
 require_once('./services/Response.php');
 require_once('./services/Request.php');
 require_once('./services/QueriesService.php');
+require_once('./services/VideosService.php');
 
 require_once('./Container.php');
 
