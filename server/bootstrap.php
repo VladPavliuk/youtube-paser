@@ -5,6 +5,7 @@ require_once("./database/DatabaseConnection.php");
 require_once("./database/migrations/BootstrapMigrations.php");
 
 require_once("./models/Main.php");
+require_once("./models/Query.php");
 
 require_once("./router/AnalyzerURI.php");
 require_once("./router/AnalyzerInnerPath.php");
@@ -23,6 +24,12 @@ Container::set('youtubeParser', new YoutubeParser(
 Container::set('bootstrapMigrations', new BootstrapMigrations);
 Container::set('response', new Response);
 Container::set('router', new Router);
+
+/**
+ * Register helpers methods
+ *
+ */
+require_once('./helper.php');
 
 /**
  * Run the migrations

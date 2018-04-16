@@ -2,7 +2,7 @@ var serverApiRoutes = {
     domain: 'http://localhost:8000',
 
     getAllQueriesLis: function () {
-        return serverApiRoutes.domain + '/all-search-queries'
+        return serverApiRoutes.domain + '/queries'
     },
 
     getSimilarSearchQueries: function (searchString) {
