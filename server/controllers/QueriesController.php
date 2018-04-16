@@ -18,14 +18,4 @@ class QueriesController extends Controller
     {
         return response()->json($this->queryModel->show($id));
     }
-
-    public function updateAction()
-    {
-
-    }
-
-    public function destroyAction()
-    {
-
-    }
 }

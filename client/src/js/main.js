@@ -1,10 +1,11 @@
-
 var server = {
     request: function (requestObject) {
         var xhttp = new XMLHttpRequest();
+        currentPage.loadingBar.show();
 
         xhttp.onreadystatechange = function () {
             if (requestObject.hasOwnProperty('callback') && this.readyState === 4 && this.status === 200) {
+                currentPage.loadingBar.hide();
                 requestObject['callback'](JSON.parse(this.response));
             }
         };
@@ -39,6 +40,16 @@ var serverApiRoutes = {
 
         show: function (id) {
             return serverApiRoutes.domain + '/queries/' + id;
+        }
+    },
+
+    videos: {
+        searchVideos: function (query) {
+            return serverApiRoutes.domain + '/search-videos/' + query
+        },
+
+        getVideosByQueryId: function (id) {
+            return serverApiRoutes.domain + '/get-videos-by-query/' + id
         }
     },
 
@@ -78,10 +89,28 @@ var serverApiMethods = {
             });
         },
 
-        show: function(id, callback) {
+        show: function (id, callback) {
             server.request({
                 method: 'get',
                 uri: serverApiRoutes.queries.show(id),
+                callback: callback
+            });
+        }
+    },
+
+    videos: {
+        searchVideos: function (query, callback) {
+            server.request({
+                method: 'post',
+                uri: serverApiRoutes.videos.searchVideos(query),
+                callback: callback
+            });
+        },
+
+        getVideosByQueryId: function (id, callback) {
+            server.request({
+                method: 'get',
+                uri: serverApiRoutes.videos.getVideosByQueryId(id),
                 callback: callback
             });
         }
@@ -129,40 +158,7 @@ var serverApiMethods = {
         xhttp.send();
     },
 
-    getVideosByQuery: function (searchQuery) {
-        currentPage.loadingBar.show();
 
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.response);
-                currentPage.videosTable.setItems(response);
-                // serverApiMethods.getQueryInfo(searchQuery);
-                currentPage.loadingBar.hide();
-            }
-        };
-        xhttp.open("GET", serverApiRoutes.getQueryInfo(searchQuery), true);
-        xhttp.send();
-    },
-
-    getQueryInfo: function (searchQuery) {
-        var xhttp = new XMLHttpRequest();
-        currentPage.videosTable.hide();
-
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-
-                var response = JSON.parse(this.response);
-
-                currentPage.videosInfoBlock.amountInDatabase.setAmount(response);
-                currentPage.videosInfoBlock.middleRating.setMiddleRating(response);
-                currentPage.videosInfoBlock.titlesList.setTitles(response);
-                currentPage.videosInfoBlock.show();
-            }
-        };
-        xhttp.open("GET", serverApiRoutes.getQueryInfo(searchQuery), true);
-        xhttp.send();
-    }
 
 };
 
@@ -170,6 +166,7 @@ var currentPage = {
     queriesList: {
         id: 'queries-list',
         selectedQueryId: '',
+        videosList: [],
 
         getElement: function () {
             return document.getElementById(this.id);
@@ -206,10 +203,17 @@ var currentPage = {
         _addItemClickHandler: function (itemElement) {
             itemElement.addEventListener('click', function (event) {
                 currentPage.queriesList.selectedQueryId = event.target.getAttribute('data-id');
-                serverApiMethods.queries.show(currentPage.queriesList.selectedQueryId, function(response) {
-                    console.log(response);
+
+                serverApiMethods.queries.show(currentPage.queriesList.selectedQueryId, function () {
+
+                    serverApiMethods.videos.searchVideos(event.target.innerHTML, function () {
+
+                        serverApiMethods.videos.getVideosByQueryId(currentPage.queriesList.selectedQueryId, function (response) {
+                            currentPage.videosInfoBlock.setInfo(response);
+                            currentPage.queriesList.videosList = response;
+                        });
+                    });
                 });
-                // serverApiMethods.getQueryInfo(currentPage.queriesList.selectedQueryId);
             });
         }
     },
@@ -268,48 +272,55 @@ var currentPage = {
             this.getElement().style.display = 'none';
         }
     },
-    searchInput: {
-        id: 'search-input',
-
-        getElement: function () {
-            return document.getElementById(currentPage.searchInput.id);
-        },
-
-        addInputHandler: function () {
-            this.getElement().addEventListener("input", function () {
-                var inputString = currentPage.searchInput.getText();
-
-                if (inputString.length > 0) {
-                    currentPage.searchButton.show();
-                    serverApiMethods.getSimilarSearchQueries(inputString);
-                } else {
-                    currentPage.similarSearchQueriesList.hide();
-                    currentPage.searchButton.hide();
-                }
-            });
-        },
-
-        addEnterHandler: function () {
-            this.getElement().addEventListener("keyup", function (event) {
-                if (event.keyCode === 13) {
-                    currentPage.searchButton.getElement().click();
-                }
-            });
-        },
-
-        getText: function () {
-            return this.getElement().value;
-        },
-
-        setText: function (string) {
-            this.getElement().value = string;
-        },
-
-        clearText: function () {
-            this.setText('');
-        }
-    },
+    // searchInput: {
+    //     id: 'search-input',
+    //
+    //     getElement: function () {
+    //         return document.getElementById(currentPage.searchInput.id);
+    //     },
+    //
+    //     addInputHandler: function () {
+    //         this.getElement().addEventListener("input", function () {
+    //             var inputString = currentPage.searchInput.getText();
+    //
+    //             if (inputString.length > 0) {
+    //                 currentPage.searchButton.show();
+    //                 serverApiMethods.getSimilarSearchQueries(inputString);
+    //             } else {
+    //                 currentPage.similarSearchQueriesList.hide();
+    //                 currentPage.searchButton.hide();
+    //             }
+    //         });
+    //     },
+    //
+    //     addEnterHandler: function () {
+    //         this.getElement().addEventListener("keyup", function (event) {
+    //             if (event.keyCode === 13) {
+    //                 currentPage.searchButton.getElement().click();
+    //             }
+    //         });
+    //     },
+    //
+    //     getText: function () {
+    //         return this.getElement().value;
+    //     },
+    //
+    //     setText: function (string) {
+    //         this.getElement().value = string;
+    //     },
+    //
+    //     clearText: function () {
+    //         this.setText('');
+    //     }
+    // },
     videosInfoBlock: {
+        setInfo: function (videos) {
+            currentPage.videosInfoBlock.amountInDatabase.setAmount(videos);
+            currentPage.videosInfoBlock.middleRating.setMiddleRating(videos);
+            currentPage.videosInfoBlock.titlesList.setTitles(videos);
+            currentPage.videosInfoBlock.show();
+        },
+
         amountInDatabase: {
             id: 'amount-in-database',
             initialText: 'Amount in database: ',
@@ -342,7 +353,7 @@ var currentPage = {
             setMiddleRating: function (videosList) {
                 var i, middleRating = 0;
                 for (i = 0; i < videosList.length; i++) {
-                    middleRating += parseInt(videosList[i].mark);
+                    middleRating += videosList[i].mark ? parseInt(videosList[i].mark) : 0;
                 }
                 middleRating = parseInt(middleRating / videosList.length) + '%';
 
@@ -396,7 +407,8 @@ var currentPage = {
 
             addClickEvent: function () {
                 this.getElement().addEventListener('click', function () {
-                    serverApiMethods.getVideosByQuery(currentPage.queriesList.selectedQueryId);
+                    // serverApiMethods.getVideosByQuery(currentPage.queriesList.selectedQueryId);
+                    currentPage.videosTable.setItems(currentPage.queriesList.videosList)
                 });
             }
         },
@@ -413,75 +425,75 @@ var currentPage = {
             this.getElement().style.display = 'none';
         }
     },
-    similarSearchQueriesList: {
-        id: 'similar-search-queries-list',
-
-        getElement: function () {
-            return document.getElementById(this.id);
-        },
-
-        addItemsClickHandler: function (newItem) {
-            newItem.addEventListener('click', function (event) {
-                var searchQueryValue = event.target.getAttribute('data-value');
-                serverApiMethods.makeSearchQuery(searchQueryValue);
-            });
-        },
-
-        show: function () {
-            this.getElement().parentNode.style.display = 'inline-block';
-        },
-
-        hide: function () {
-            this.getElement().parentNode.style.display = 'none';
-        },
-
-        clear: function () {
-            this.getElement().innerHTML = '';
-        },
-
-        setItems: function (itemsList) {
-            this.clear();
-            for (var i = 0; i < itemsList.length; i++) {
-                var newItem = this._generateItem(itemsList[i].value);
-                this.addItemsClickHandler(newItem);
-                this.getElement().appendChild(newItem);
-            }
-
-            itemsList.length > 0 ? this.show() : this.hide();
-        },
-
-        _generateItem: function (text) {
-            var item = document.createElement('li');
-            item.innerText = text;
-            item.setAttribute('data-value', text);
-
-            return item;
-        }
-
-    },
-    searchButton: {
-        id: 'search-button',
-
-        getElement: function () {
-            return document.getElementById(this.id);
-        },
-
-        addClickHandler: function () {
-            this.getElement().addEventListener('click', function () {
-                if (currentPage.searchInput.getText().length > 0) {
-                    serverApiMethods.makeSearchQuery(currentPage.searchInput.getText());
-                }
-            });
-        },
-
-        show: function () {
-            this.getElement().style.display = 'inline';
-        },
-
-        hide: function () {
-            this.getElement().style.display = 'none';
-        }
-    },
+    // similarSearchQueriesList: {
+    //     id: 'similar-search-queries-list',
+    //
+    //     getElement: function () {
+    //         return document.getElementById(this.id);
+    //     },
+    //
+    //     addItemsClickHandler: function (newItem) {
+    //         newItem.addEventListener('click', function (event) {
+    //             var searchQueryValue = event.target.getAttribute('data-value');
+    //             serverApiMethods.makeSearchQuery(searchQueryValue);
+    //         });
+    //     },
+    //
+    //     show: function () {
+    //         this.getElement().parentNode.style.display = 'inline-block';
+    //     },
+    //
+    //     hide: function () {
+    //         this.getElement().parentNode.style.display = 'none';
+    //     },
+    //
+    //     clear: function () {
+    //         this.getElement().innerHTML = '';
+    //     },
+    //
+    //     setItems: function (itemsList) {
+    //         this.clear();
+    //         for (var i = 0; i < itemsList.length; i++) {
+    //             var newItem = this._generateItem(itemsList[i].value);
+    //             this.addItemsClickHandler(newItem);
+    //             this.getElement().appendChild(newItem);
+    //         }
+    //
+    //         itemsList.length > 0 ? this.show() : this.hide();
+    //     },
+    //
+    //     _generateItem: function (text) {
+    //         var item = document.createElement('li');
+    //         item.innerText = text;
+    //         item.setAttribute('data-value', text);
+    //
+    //         return item;
+    //     }
+    //
+    // },
+    // searchButton: {
+    //     id: 'search-button',
+    //
+    //     getElement: function () {
+    //         return document.getElementById(this.id);
+    //     },
+    //
+    //     addClickHandler: function () {
+    //         this.getElement().addEventListener('click', function () {
+    //             if (currentPage.searchInput.getText().length > 0) {
+    //                 serverApiMethods.makeSearchQuery(currentPage.searchInput.getText());
+    //             }
+    //         });
+    //     },
+    //
+    //     show: function () {
+    //         this.getElement().style.display = 'inline';
+    //     },
+    //
+    //     hide: function () {
+    //         this.getElement().style.display = 'none';
+    //     }
+    // },
     videosTable: {
         id: 'videos-table',
 
@@ -548,7 +560,7 @@ currentPage.queriesList.getItems();
 currentPage.addNewQueryButton.addClickEvent();
 currentPage.videosInfoBlock.showVideosButton.addClickEvent();
 currentPage.newQueryInput.clearText();
-currentPage.searchInput.clearText();
-currentPage.searchInput.addInputHandler();
-currentPage.searchInput.addEnterHandler();
-currentPage.searchButton.addClickHandler();
+// currentPage.searchInput.clearText();
+// currentPage.searchInput.addInputHandler();
+// currentPage.searchInput.addEnterHandler();
+// currentPage.searchButton.addClickHandler();

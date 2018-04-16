@@ -22,6 +22,28 @@ class Video extends Model implements IStandardActions
         return $queriesList;
     }
 
+    public function getByQueryId($queryId)
+    {
+        $videosList = [];
+        $query = db()->prepare("SELECT * FROM search_queries_videos WHERE search_query_id = :search_query_id");
+
+        $query->execute([
+            ':search_query_id' => $queryId
+        ]);
+
+        while ($row = $query->fetch()) {
+            $videosList[] = [
+                'id' => $row['id'],
+                'title' => $row['video_title'],
+                'mark' => $row['video_mark'],
+                'description' => htmlspecialchars_decode($row['video_description']),
+                'search_query_id' => $row['search_query_id'],
+            ];
+        }
+
+        return $videosList;
+    }
+
     public function store($item)
     {
         $query = db()->prepare("INSERT INTO search_queries_videos (search_query_id, video_title, video_mark, video_description) 

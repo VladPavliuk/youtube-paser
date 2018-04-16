@@ -5,7 +5,8 @@ return [
     'GET:queries' => 'Queries/index',
     'GET:queries/(.+)' => 'Queries/show/$1',
 
-    'POST:search-videos/(.+)' => 'Videos/getVideosByQuery/$1',
+    'POST:search-videos/(.+)' => 'Videos/searchVideos/$1',
+    'GET:get-videos-by-query/(.+)' => 'Videos/getVideosByQuery/$1',
 
     'GET:all-search-queries' => 'Main/allSearchQueries',
     'GET:search/(.+)' => 'Main/search/$1',
