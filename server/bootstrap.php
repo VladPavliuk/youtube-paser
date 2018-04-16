@@ -4,6 +4,7 @@ require_once('./configs/db_config.php');
 require_once("./database/DatabaseConnection.php");
 require_once("./database/migrations/BootstrapMigrations.php");
 
+require_once("./models/interfaces/IStandardActions.php");
 require_once("./models/Model.php");
 require_once("./models/Main.php");
 require_once("./models/Query.php");
@@ -15,6 +16,7 @@ require_once('./services/HtmlLoader.php');
 require_once('./services/YoutubeParser.php');
 require_once('./services/Response.php');
 require_once('./services/Request.php');
+require_once('./services/QueriesService.php');
 
 require_once('./Container.php');
 

@@ -1,6 +1,6 @@
 <?php
 
-class Query extends Model
+class Query extends Model implements IStandardActions
 {
     public function index()
     {
@@ -9,7 +9,7 @@ class Query extends Model
         $query = db()->prepare("SELECT * FROM search_queries");
         $query->execute();
 
-        while($row = $query->fetch()) {
+        while ($row = $query->fetch()) {
             $queriesList[] = [
                 'id' => $row['id'],
                 'value' => urldecode($row['search_query'])
@@ -19,11 +19,11 @@ class Query extends Model
         return $queriesList;
     }
 
-    public function store($queryObj)
+    public function store($item)
     {
         $query = db()->prepare("INSERT INTO search_queries (search_query) VALUE (:search_query)");
         $query->execute([
-            'search_query' => $queryObj['title']
+            'search_query' => $item['title']
         ]);
 
         return true;
@@ -31,20 +31,28 @@ class Query extends Model
 
     public function show($id)
     {
+        $item = [];
         $query = db()->prepare("SELECT * FROM search_queries WHERE id = :id");
         $query->execute([
             ':id' => $id
         ]);
 
-        return $this->getFields($query->fetch(), 'id', 'search_query');
+        while ($row = $query->fetch()) {
+            $item = [
+                'id' => $row['id'],
+                'value' => urldecode($row['search_query'])
+            ];
+        }
+
+        return $item;
     }
 
-    public function update()
+    public function update($id, $item)
     {
 
     }
 
-    public function destroy()
+    public function destroy($id)
     {
 
     }
