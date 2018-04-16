@@ -14,9 +14,9 @@ class QueriesController extends Controller
         ]));
     }
 
-    public function showAction()
+    public function showAction($id)
     {
-
+        return response()->json($this->queryModel->show($id));
     }
 
     public function updateAction()

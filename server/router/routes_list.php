@@ -3,6 +3,7 @@
 return [
     'POST:queries' => 'Queries/store',
     'GET:queries' => 'Queries/index',
+    'GET:queries/(.+)' => 'Queries/show/$1',
 
     'GET:all-search-queries' => 'Main/allSearchQueries',
     'GET:search/(.+)' => 'Main/search/$1',
