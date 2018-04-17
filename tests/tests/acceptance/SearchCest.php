@@ -11,8 +11,13 @@ class SearchCest
     {
     }
 
-    // tests
     public function tryToTest(AcceptanceTester $I)
     {
+        $I->amOnPage('/');
+//        $I->fillField(['id' => 'add-new-query-input'], 'qwerty');
+//        $I->click('add-new-query-button');
+//        $I->seeElement(['id' => 'loading-bar-wrapper']);
+//        $I->wait(30);
+//        $I->see('qwerty');
     }
 }

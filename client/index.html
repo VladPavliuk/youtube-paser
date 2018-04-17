@@ -30,10 +30,14 @@
     </div>
 
     <div class="add-new-query-wrapper">
-        <label for="add-new-query-input">Add new query</label>
-        <input type="text"
-               class="acute-border"
-               id="add-new-query-input"><button id="add-new-query-button"></button>
+        <form action="#">
+            <label for="add-new-query-input">Add new query</label>
+            <input type="text"
+                   class="acute-border"
+                   name="add-new-query-input"
+                   id="add-new-query-input"><button type="button"
+                                                    id="add-new-query-button"></button>
+        </form>
     </div>
 
     <div class="result-wrapper" style="display: none">
@@ -41,7 +45,9 @@
         <p id="amount-in-database" style="display: none"></p>
         <p id="middle-rating" style="display: none"></p>
         <p id="videos-titles" style="display: none"></p>
-        <button id="show-videos">Show videos</button>
+        <button name="show-videos"
+                id="show-videos">Show videos
+        </button>
     </div>
 
     <div class="item-wrapper">
@@ -50,11 +56,11 @@
         </h2>
         <table id="videos-table" style="display: none">
             <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Rating</th>
-                    <th>Description</th>
-                </tr>
+            <tr>
+                <th>Title</th>
+                <th>Rating</th>
+                <th>Description</th>
+            </tr>
             </thead>
             <tbody></tbody>
         </table>
