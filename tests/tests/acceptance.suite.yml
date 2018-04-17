@@ -10,4 +10,5 @@ modules:
         - WebDriver:
             url: http://localhost:8001
             browser: firefox
+            binary: /opt/firefox/firefox
         - \Helper\Acceptance

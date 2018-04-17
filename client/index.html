@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Youtube parser</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="./src/css/main.css">
+    <link rel="stylesheet" href="src/css/_bem.css">
     <link rel="stylesheet" href="src/css/main.css">
+    <link rel="stylesheet" href="src/css/loading-bar.css">
 </head>
 <body>
 
@@ -16,9 +17,8 @@
 </div>
 
 <div class="main-wrapper">
-
     <div class="header p-10 text-center">
-        <div class="brand-icon white-text big-text p-5">
+        <div class="brand-icon inline-block uppercase-text bold-text white-text big-text p-5">
             <img src="./src/img/video-play-icon.png" class="pull-left" alt="icon">
             <span class="pull-left pr-5">Youtube parser</span>
         </div>
@@ -36,6 +36,7 @@
                    class="acute-border"
                    name="add-new-query-input"
                    id="add-new-query-input"><button type="button"
+                                                    class="relative no-border mt-10"
                                                     id="add-new-query-button"></button>
         </form>
     </div>
@@ -46,6 +47,7 @@
         <p id="middle-rating" style="display: none"></p>
         <p id="videos-titles" style="display: none"></p>
         <button name="show-videos"
+                class="no-border mt-10"
                 id="show-videos">Show videos
         </button>
     </div>
