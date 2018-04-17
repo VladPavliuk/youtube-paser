@@ -305,7 +305,6 @@ var currentPage = {
 
             addClickEvent: function () {
                 this.getElement().addEventListener('click', function () {
-                    // serverApiMethods.getVideosByQuery(currentPage.queriesList.selectedQueryId);
                     currentPage.videosTable.setItems(currentPage.queriesList.videosList)
                 });
             }
@@ -372,12 +371,15 @@ var currentPage = {
             this.clear();
 
             for (var i = 0; i < itemsList.length; i++) {
-                var newItem = this._generateItem(
-                    itemsList[i].title,
-                    itemsList[i].mark,
-                    itemsList[i].description
-                );
-                this.getTableBody().appendChild(newItem);
+                if (itemsList[i].title && parseInt(itemsList[i].mark)) {
+                    var newItem = this._generateItem(
+                        itemsList[i].title,
+                        parseInt(itemsList[i].mark) + '%',
+                        itemsList[i].description
+                    );
+                    this.getTableBody().appendChild(newItem);
+                }
+
             }
 
             this.show();
@@ -389,7 +391,3 @@ currentPage.queriesList.getItems();
 currentPage.addNewQueryButton.addClickEvent();
 currentPage.videosInfoBlock.showVideosButton.addClickEvent();
 currentPage.newQueryInput.clearText();
-// currentPage.searchInput.clearText();
-// currentPage.searchInput.addInputHandler();
-// currentPage.searchInput.addEnterHandler();
-// currentPage.searchButton.addClickHandler();
