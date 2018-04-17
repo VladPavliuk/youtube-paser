@@ -141,8 +141,8 @@ var currentPage = {
 
         _addItemClickHandler: function (itemElement) {
             itemElement.addEventListener('click', function (event) {
+                currentPage.videosTable.hide();
                 currentPage.queriesList.selectedQueryId = event.target.getAttribute('data-id');
-                currentPage.videosInfoBlock.hide();
 
                 serverApiMethods.queries.show(currentPage.queriesList.selectedQueryId, function () {
 
@@ -290,10 +290,12 @@ var currentPage = {
 
             show: function () {
                 this.getElement().style.display = 'block';
+                // document.getElementById('videos-table').style.display = 'block';
             },
 
             hide: function () {
                 this.getElement().style.display = 'none';
+                // document.getElementById('videos-table').style.display = 'none';
             }
         },
 
