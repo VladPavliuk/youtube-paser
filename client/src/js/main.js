@@ -51,22 +51,6 @@ var serverApiRoutes = {
         getVideosByQueryId: function (id) {
             return serverApiRoutes.domain + '/get-videos-by-query/' + id
         }
-    },
-
-    getAllQueriesLis: function () {
-        return serverApiRoutes.domain + '/queries'
-    },
-
-    getSimilarSearchQueries: function (searchString) {
-        return serverApiRoutes.domain + '/match-with-exists/' + searchString;
-    },
-
-    makeSearchQuery: function (searchQuery) {
-        return serverApiRoutes.domain + '/search/' + searchQuery;
-    },
-
-    getQueryInfo: function (searchQuery) {
-        return serverApiRoutes.domain + '/get-query-info/' + searchQuery;
     }
 };
 
@@ -114,52 +98,7 @@ var serverApiMethods = {
                 callback: callback
             });
         }
-    },
-
-
-    // getAllQueriesLis: function () {
-    //     var xhttp = new XMLHttpRequest();
-    //     xhttp.onreadystatechange = function () {
-    //         if (this.readyState == 4 && this.status == 200) {
-    //             var response = JSON.parse(this.response);
-    //             currentPage.queriesList.setItems(response);
-    //         }
-    //     };
-    //     xhttp.open("GET", serverApiRoutes.getAllQueriesLis(), true);
-    //     xhttp.send();
-    // },
-
-    getSimilarSearchQueries: function (searchString) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.response);
-                currentPage.similarSearchQueriesList.setItems(response);
-            }
-        };
-        xhttp.open("GET", serverApiRoutes.getSimilarSearchQueries(searchString), true);
-        xhttp.send();
-    },
-
-    makeSearchQuery: function (searchQuery) {
-        // currentPage.similarSearchQueriesList.hide();
-        // currentPage.searchInput.setText(searchQuery);
-        currentPage.loadingBar.show();
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.response);
-                // currentPage.videosTable.setItems(response);
-                // serverApiMethods.getQueryInfo(searchQuery);
-                currentPage.loadingBar.hide();
-            }
-        };
-        xhttp.open("GET", serverApiRoutes.makeSearchQuery(searchQuery), true);
-        xhttp.send();
-    },
-
-
-
+    }
 };
 
 var currentPage = {
@@ -272,47 +211,6 @@ var currentPage = {
             this.getElement().style.display = 'none';
         }
     },
-    // searchInput: {
-    //     id: 'search-input',
-    //
-    //     getElement: function () {
-    //         return document.getElementById(currentPage.searchInput.id);
-    //     },
-    //
-    //     addInputHandler: function () {
-    //         this.getElement().addEventListener("input", function () {
-    //             var inputString = currentPage.searchInput.getText();
-    //
-    //             if (inputString.length > 0) {
-    //                 currentPage.searchButton.show();
-    //                 serverApiMethods.getSimilarSearchQueries(inputString);
-    //             } else {
-    //                 currentPage.similarSearchQueriesList.hide();
-    //                 currentPage.searchButton.hide();
-    //             }
-    //         });
-    //     },
-    //
-    //     addEnterHandler: function () {
-    //         this.getElement().addEventListener("keyup", function (event) {
-    //             if (event.keyCode === 13) {
-    //                 currentPage.searchButton.getElement().click();
-    //             }
-    //         });
-    //     },
-    //
-    //     getText: function () {
-    //         return this.getElement().value;
-    //     },
-    //
-    //     setText: function (string) {
-    //         this.getElement().value = string;
-    //     },
-    //
-    //     clearText: function () {
-    //         this.setText('');
-    //     }
-    // },
     videosInfoBlock: {
         setInfo: function (videos) {
             currentPage.videosInfoBlock.amountInDatabase.setAmount(videos);
@@ -425,75 +323,6 @@ var currentPage = {
             this.getElement().style.display = 'none';
         }
     },
-    // similarSearchQueriesList: {
-    //     id: 'similar-search-queries-list',
-    //
-    //     getElement: function () {
-    //         return document.getElementById(this.id);
-    //     },
-    //
-    //     addItemsClickHandler: function (newItem) {
-    //         newItem.addEventListener('click', function (event) {
-    //             var searchQueryValue = event.target.getAttribute('data-value');
-    //             serverApiMethods.makeSearchQuery(searchQueryValue);
-    //         });
-    //     },
-    //
-    //     show: function () {
-    //         this.getElement().parentNode.style.display = 'inline-block';
-    //     },
-    //
-    //     hide: function () {
-    //         this.getElement().parentNode.style.display = 'none';
-    //     },
-    //
-    //     clear: function () {
-    //         this.getElement().innerHTML = '';
-    //     },
-    //
-    //     setItems: function (itemsList) {
-    //         this.clear();
-    //         for (var i = 0; i < itemsList.length; i++) {
-    //             var newItem = this._generateItem(itemsList[i].value);
-    //             this.addItemsClickHandler(newItem);
-    //             this.getElement().appendChild(newItem);
-    //         }
-    //
-    //         itemsList.length > 0 ? this.show() : this.hide();
-    //     },
-    //
-    //     _generateItem: function (text) {
-    //         var item = document.createElement('li');
-    //         item.innerText = text;
-    //         item.setAttribute('data-value', text);
-    //
-    //         return item;
-    //     }
-    //
-    // },
-    // searchButton: {
-    //     id: 'search-button',
-    //
-    //     getElement: function () {
-    //         return document.getElementById(this.id);
-    //     },
-    //
-    //     addClickHandler: function () {
-    //         this.getElement().addEventListener('click', function () {
-    //             if (currentPage.searchInput.getText().length > 0) {
-    //                 serverApiMethods.makeSearchQuery(currentPage.searchInput.getText());
-    //             }
-    //         });
-    //     },
-    //
-    //     show: function () {
-    //         this.getElement().style.display = 'inline';
-    //     },
-    //
-    //     hide: function () {
-    //         this.getElement().style.display = 'none';
-    //     }
-    // },
     videosTable: {
         id: 'videos-table',
 
