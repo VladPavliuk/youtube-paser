@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/behat/gherkin" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/codeception/codeception" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/codeception/phpunit-wrapper" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/codeception/stub" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/doctrine/instantiator" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/facebook/webdriver" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/guzzlehttp/psr7" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/myclabs/deep-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phar-io/manifest" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phar-io/version" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpdocumentor/reflection-docblock" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpspec/prophecy" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpunit/php-code-coverage" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpunit/php-file-iterator" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpunit/php-text-template" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpunit/php-timer" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpunit/php-token-stream" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpunit/phpunit" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/phpunit/phpunit-mock-objects" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/code-unit-reverse-lookup" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/comparator" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/diff" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/environment" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/exporter" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/global-state" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/object-enumerator" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/object-reflector" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/recursion-context" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/resource-operations" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/sebastian/version" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/symfony/browser-kit" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/symfony/css-selector" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/symfony/dom-crawler" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/symfony/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/symfony/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/symfony/process" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/symfony/yaml" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/theseer/tokenizer" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/vendor/webmozart/assert" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
