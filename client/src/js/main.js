@@ -142,6 +142,7 @@ var currentPage = {
         _addItemClickHandler: function (itemElement) {
             itemElement.addEventListener('click', function (event) {
                 currentPage.queriesList.selectedQueryId = event.target.getAttribute('data-id');
+                currentPage.videosInfoBlock.hide();
 
                 serverApiMethods.queries.show(currentPage.queriesList.selectedQueryId, function () {
 
