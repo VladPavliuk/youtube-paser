@@ -23,6 +23,7 @@ class AddNewQueryCest
         $I->fillField(['id' => 'add-new-query-input'], $randomString);
         $I->click(['id' => 'add-new-query-button']);
         $I->waitForText($randomString, 5);
+        $I->wait(5);
     }
 
     private function randomWord($length = 6)
