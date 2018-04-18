@@ -142,19 +142,40 @@ var currentPage = {
         _addItemClickHandler: function (itemElement) {
             itemElement.addEventListener('click', function (event) {
                 currentPage.videosTable.hide();
+                currentPage.noVideosText.hide();
+                currentPage.videosInfoBlock.hide();
                 currentPage.queriesList.selectedQueryId = event.target.getAttribute('data-id');
-
                 serverApiMethods.queries.show(currentPage.queriesList.selectedQueryId, function () {
 
                     serverApiMethods.videos.searchVideos(event.target.innerHTML, function () {
 
                         serverApiMethods.videos.getVideosByQueryId(currentPage.queriesList.selectedQueryId, function (response) {
-                            currentPage.videosInfoBlock.setInfo(response);
-                            currentPage.queriesList.videosList = response;
+                            if(response.length > 0) {
+                                currentPage.videosInfoBlock.setInfo(response);
+                                currentPage.videosInfoBlock.show();
+                                currentPage.queriesList.videosList = response;
+                            } else {
+                                currentPage.noVideosText.show();
+                            }
                         });
                     });
                 });
             });
+        }
+    },
+    noVideosText: {
+        id: 'no-videos',
+
+        getElement: function () {
+            return document.getElementById(this.id);
+        },
+
+        show: function () {
+            this.getElement().style.display = 'block';
+        },
+
+        hide: function () {
+            this.getElement().style.display = 'none';
         }
     },
     addNewQueryButton: {
@@ -374,7 +395,7 @@ var currentPage = {
             this.clear();
 
             for (var i = 0; i < itemsList.length; i++) {
-                if (itemsList[i].title && parseInt(itemsList[i].mark)) {
+                if (itemsList[i].title && parseInt(itemsList[i].mark) >= 0) {
                     var newItem = this._generateItem(
                         itemsList[i].title,
                         parseInt(itemsList[i].mark) + '%',
