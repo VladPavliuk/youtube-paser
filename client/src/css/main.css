@@ -48,6 +48,7 @@
 }
 
 #videos-titles span, #queries-list span {
+    display: inline-block;
     background-color: #e3e3e3;
     margin: 5px;
     padding: 1px 7px;
