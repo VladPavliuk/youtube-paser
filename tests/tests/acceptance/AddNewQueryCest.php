@@ -11,6 +11,10 @@ class AddNewQueryCest
     {
     }
 
+    /**
+     * @param AcceptanceTester $I
+     * @throws Exception
+     */
     public function tryToTest(AcceptanceTester $I)
     {
         $I->amOnPage('/');
@@ -18,8 +22,7 @@ class AddNewQueryCest
 
         $I->fillField(['id' => 'add-new-query-input'], $randomString);
         $I->click(['id' => 'add-new-query-button']);
-        $I->wait(3);
-        $I->see($randomString);
+        $I->waitForText($randomString, 3);
     }
 
     private function randomWord($length = 6)
