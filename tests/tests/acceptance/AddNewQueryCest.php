@@ -17,9 +17,9 @@ class AddNewQueryCest
      */
     public function tryToTest(AcceptanceTester $I)
     {
-        $I->amOnPage('/');
         $randomString = $this->randomWord();
 
+        $I->amOnPage('/');
         $I->fillField(['id' => 'add-new-query-input'], $randomString);
         $I->click(['id' => 'add-new-query-button']);
         $I->waitForText($randomString, 3);
