@@ -9,6 +9,6 @@ modules:
     enabled:
         - WebDriver:
             url: http://localhost:8001
-            browser: firefox
-            binary: /opt/firefox/firefox
+            browser: chrome
+            port: 4444
         - \Helper\Acceptance
