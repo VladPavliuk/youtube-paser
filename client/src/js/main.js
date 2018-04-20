@@ -28,6 +28,7 @@ var server = {
 
 var serverApiRoutes = {
     domain: 'http://localhost:8000',
+    // domain: 'http://youtube-parser-server.vladdev.com',
 
     queries: {
         store: function () {
