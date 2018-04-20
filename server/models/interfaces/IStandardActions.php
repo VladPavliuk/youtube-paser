@@ -1,5 +1,7 @@
 <?php
 
+namespace Models\Interfaces;
+
 interface IStandardActions
 {
     public function index();

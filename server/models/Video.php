@@ -1,5 +1,10 @@
 <?php
 
+namespace Models;
+
+use Models\Interfaces\IStandardActions;
+use Models\Model;
+
 class Video extends Model implements IStandardActions
 {
     public function index()

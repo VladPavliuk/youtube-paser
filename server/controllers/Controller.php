@@ -1,5 +1,11 @@
 <?php
 
+namespace Controllers;
+
+use Models\Main;
+use Models\Query;
+use Models\Video;
+
 class Controller
 {
     protected $mainModel;

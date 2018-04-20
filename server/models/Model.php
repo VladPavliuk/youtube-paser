@@ -1,5 +1,7 @@
 <?php
 
+namespace Models;
+
 class Model
 {
     protected function getFields($initialModelObj, ...$requestFields)

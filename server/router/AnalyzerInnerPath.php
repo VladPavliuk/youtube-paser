@@ -1,5 +1,10 @@
 <?php
 
+namespace Router;
+
+use Controllers\QueriesController;
+use Controllers\VideosController;
+
 /**
  * Trait AnalyzerControllerConnect
  *
@@ -42,10 +47,10 @@ class AnalyzerInnerPath
     private function defineControllerClass($controllerClass)
     {
         $controllerClass = ucfirst($controllerClass);
-        $controllerClass = $controllerClass . 'Controller';
+        $controllerClass = '\Controllers\\' . $controllerClass . 'Controller';
 
-        $this->includeCoreControllerFile();
-        $this->includeControllerFile($controllerClass);
+//        $this->includeCoreControllerFile();
+//        $this->includeControllerFile($controllerClass);
         $this->getControllerObj($controllerClass);
     }
 
@@ -104,7 +109,6 @@ class AnalyzerInnerPath
      */
     private function getControllerObj($controllerClass)
     {
-        // Checking class exists in file.
         if (class_exists($controllerClass)) {
             $this->controllerObj = new $controllerClass();
         } else {

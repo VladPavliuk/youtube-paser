@@ -1,5 +1,7 @@
 <?php
 
+namespace Controllers;
+
 class QueriesController extends Controller
 {
     public function indexAction()

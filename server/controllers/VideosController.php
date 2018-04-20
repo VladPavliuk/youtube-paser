@@ -1,5 +1,7 @@
 <?php
 
+namespace Controllers;
+
 class VideosController extends Controller
 {
     public function indexAction()

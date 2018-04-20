@@ -1,5 +1,7 @@
 <?php
 
+namespace Router;
+
 /**
  * Trait AnalyzerURI
  * return array of inner path elements name

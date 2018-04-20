@@ -1,5 +1,11 @@
 <?php
 
+namespace Services;
+
+use DOMDocument;
+use Services\HtmlLoader;
+use Models\Main;
+
 class YoutubeParser
 {
     protected $domain = 'https://www.youtube.com';

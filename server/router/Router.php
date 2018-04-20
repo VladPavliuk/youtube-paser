@@ -1,5 +1,7 @@
 <?php
 
+namespace Router;
+
 /**
  * Class Router execute running controllers and action.
  * Based on request URI.

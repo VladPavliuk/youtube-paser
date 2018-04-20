@@ -1,0 +1,11 @@
+{
+  "autoload": {
+    "classmap": [
+      "models",
+      "services",
+      "router",
+      "database",
+      "configs"
+    ]
+  }
+}

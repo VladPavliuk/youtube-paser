@@ -1,5 +1,9 @@
 <?php
 
+namespace Models;
+
+use Models\Interfaces\IStandardActions;
+
 class Query extends Model implements IStandardActions
 {
     public function index()
